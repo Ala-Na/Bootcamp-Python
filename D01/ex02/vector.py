@@ -172,6 +172,23 @@ class   Vector:
     def __repr__(self):
         print("{}".format(self.__str__()))
 
+    def dot(self, other):
+        if not isinstance(other, Vector):
+            raise TypeError("Dot product can only be made from two vectors of same dimensions.")
+        if len(self.values) != len(other.values):
+            raise TypeError("Dot product can only be made from two vectors of same dimensions.")
+        elif type(self.values[0]) != type(other.values[0]):
+            raise TypeError("Dot product can only be made from two vectors of same dimensions.")
+        res = 0
+        if isinstance(self.values[0], float):
+            for elem, oth_elem in zip(self.values, other.values):
+                res += elem * oth_elem
+        else:
+            for elem, elem_ot in zip(self.values, other.values):
+                for sub_elem, sub_elem_ot in zip(elem, elem_ot):
+                    res += sub_elem * sub_elem_ot
+        return res
+
 
         
            

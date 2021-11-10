@@ -72,5 +72,8 @@ def main():
     print("vect3: ", vector3.values, vector3.shape)
     print("")
 
+    print("{}".format(vector3.dot(vector2)))
+    print("{}".format(vector1.dot(vector5)))
+
 if __name__ == "__main__":
     main()
