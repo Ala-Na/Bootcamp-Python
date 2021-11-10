@@ -28,7 +28,7 @@ class Bank(object):
         if not isinstance(amount, float):
             print("Amount to transfer must be a float.")
             return False
-        if not _security_for_origin(acc_ori, amount) or not _security_for_dest(acc_dest):
+        if not self._security_for_origin(acc_ori, amount) or not self._security_for_dest(acc_dest):
             print("One of the account is corrupted. Can't process transfet.")
             return False
         acc_dest.transfer(amount)
@@ -51,20 +51,19 @@ class Bank(object):
         print("Account not found.")
         return False
 
-
     def fix_account(self, account):
-        acc = _obtain_id(account)
-        if any(key.startswith("b") for key in account.__dict__):
-            for key in account.__dict__:
+        acc = self._obtain_id(account)
+        if any(key.startswith("b") for key in acc.__dict__):
+            for key in acc.__dict__:
                 if key.startswith("b"):
                     acc.__dict__.pop(key)
         if (len(acc.__dict__) % 2 == 0):
-            if any(key == "info" for key in account.__dict__):
-                acc.__dict__.pop(key)
+            if any(k == "info" for k in acc.__dict__):
+                acc.__dict__.pop('info')
             else:
                 acc._dict__['info'] = ""
-        if not _check_corruption(acc):
-            print("Can't fi account.")
+        if not self._check_corruption(acc):
+            print("Can't fix account.")
             return False
         return True
 
@@ -75,11 +74,11 @@ class Bank(object):
             return False
         if not any(key.startswith("zip") for key in account.__dict__) and not any(key.startswith("addr") for key in account.__dict__):
             return False
-        if not account.__dict__.has_key("name"):
+        if not "name" in account.__dict__:
             return False
-        if not account.__dict__.has_key("id"):
+        if not "value" in account.__dict__:
             return False
-        if not account.__dict__.has_key("value"):
+        if not "id" in account.__dict__:
             return False
         return True
 
