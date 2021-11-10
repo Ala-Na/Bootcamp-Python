@@ -1,3 +1,5 @@
+from operator import add, sub
+
 class   Vector:
 
     def __init__(self, floats):
@@ -73,7 +75,6 @@ class   Vector:
         for elem in self.values:
            for sub_elem in elem:
                new_values.append(sub_elem)
-        self.values.clear()
         self.values = new_values
 
     def __T_column__(self):
@@ -82,15 +83,95 @@ class   Vector:
             sub_new_values = []
             sub_new_values.append(elem)
             new_values.append(sub_new_values)
-        self.values.clear()
         self.values = new_values
 
-    #def __add__(self, other):
-    #    if not isinstance(other, Vector):
-    #        self.__radd__(other)
-    #        return
-    #    else:
-    #        for elem in 
+    def __add__(self, other):
+        if not isinstance(other, Vector):
+            self.__radd__(other)
+            return
+        if len(self.values) != len(other.values):
+            raise TypeError("Can't add two vectors of differents dimensions.")
+        elif type(self.values[0]) != type(other.values[0]):
+            raise TypeError("Can't add two vectors of differents dimensions.")
+        new_values = []
+        if isinstance(self.values[0], float):
+            new_values = list(map(add, self.values, other.values))
+        else:
+            for elem, elem_ot in zip(self.values, other.values):
+                new_values.append(list(map(add, elem, elem_ot)))
+        self.values = new_values
+        
+    def __radd__(self, other):
+        raise NotImplementedError("Vectors can only be additionned with other vectors.")
+
+    def __sub__(self, other):
+        if not isinstance(other, Vector):
+            self.__rsub__(other)
+            return
+        if len(self.values) != len(other.values):
+            raise TypeError("Can't substract two vectors of differents dimensions.")
+        elif type(self.values[0]) != type(other.values[0]):
+            raise TypeError("Can't substract two vectors of differents dimensions.")
+        new_values = []
+        if isinstance(self.values[0], float):
+            new_values = list(map(sub, self.values, other.values))
+        else:
+            for elem, elem_ot in zip(self.values, other.values):
+                new_values.append(list(map(sub, elem, elem_ot)))
+        self.values = new_values
+        
+    def __rsub__(self, other):
+        raise NotImplementedError("Vectors can only be substracted with other vectors.")
+
+    def __truediv__(self, other):
+        if not isinstance(other, int) or other == 0:
+            self.__rtruediv__(other)
+            return
+        new_values = []
+        if isinstance(self.values[0], float):
+            for elem in self.values:
+                new_values.append(elem / other)
+        else:
+            for elem in self.values:
+                for sub_elem in elem:
+                    sub_new_values = []
+                    sub_new_values.append(sub_elem / other)
+                    new_values.append(sub_new_values)
+        self.values = new_values
+
+    def __rtruediv__(self, other):
+        if not isinstance(other, int):
+            raise NotImplementedError("Only division with scalars are handled.")
+        raise ZeroDivisionError("Can't divide by a zero !")
+
+    def __mul__(self, other):
+        if not isinstance(other, int):
+            self.__rmul__(other)
+            return
+        new_values = []
+        if isinstance(self.values[0], float):
+            for elem in self.values:
+                new_values.append(elem * other)
+        else:
+            for elem in self.values:
+                for sub_elem in elem:
+                    sub_new_values = []
+                    sub_new_values.append(sub_elem * other)
+                    new_values.append(sub_new_values)
+        self.values = new_values
+
+    def __rmul__(self, other):
+        raise NotImplementedError("Only multiplication with scalars are handled.")
+
+    def __str__(self):
+        txt = "{}".format(self.values)
+        txt += "\t"
+        txt += "{}".format(self.shape)
+        return txt
+
+    def __repr__(self):
+        print("{}".format(self.__str__()))
+
 
         
            
