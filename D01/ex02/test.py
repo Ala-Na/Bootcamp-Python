@@ -1,3 +1,4 @@
+from __future__ import division
 from vector import Vector
 
 def main():
@@ -74,6 +75,8 @@ def main():
 
     print("{}".format(vector3.dot(vector2)))
     print("{}".format(vector1.dot(vector5)))
+
+    2 * vector5
 
 if __name__ == "__main__":
     main()

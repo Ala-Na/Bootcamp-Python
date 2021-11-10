@@ -87,8 +87,7 @@ class   Vector:
 
     def __add__(self, other):
         if not isinstance(other, Vector):
-            self.__radd__(other)
-            return
+            raise NotImplementedError("Vectors can only be additionned with other vectors.")
         if len(self.values) != len(other.values):
             raise TypeError("Can't add two vectors of differents dimensions.")
         elif type(self.values[0]) != type(other.values[0]):
@@ -106,8 +105,7 @@ class   Vector:
 
     def __sub__(self, other):
         if not isinstance(other, Vector):
-            self.__rsub__(other)
-            return
+          raise NotImplementedError("Vectors can only be substracted with other vectors.")
         if len(self.values) != len(other.values):
             raise TypeError("Can't substract two vectors of differents dimensions.")
         elif type(self.values[0]) != type(other.values[0]):
@@ -121,12 +119,13 @@ class   Vector:
         self.values = new_values
         
     def __rsub__(self, other):
-        raise NotImplementedError("Vectors can only be substracted with other vectors.")
+        raise NotImplementedError("No substraction by vector.")
 
     def __truediv__(self, other):
         if not isinstance(other, int) or other == 0:
-            self.__rtruediv__(other)
-            return
+            if not isinstance(other, int):
+                raise NotImplementedError("Only division with scalars are handled.")
+            raise ZeroDivisionError("Can't divide by a zero !")
         new_values = []
         if isinstance(self.values[0], float):
             for elem in self.values:
@@ -140,14 +139,11 @@ class   Vector:
         self.values = new_values
 
     def __rtruediv__(self, other):
-        if not isinstance(other, int):
-            raise NotImplementedError("Only division with scalars are handled.")
-        raise ZeroDivisionError("Can't divide by a zero !")
+        raise NotImplementedError("Can't divide by vector.")
 
     def __mul__(self, other):
         if not isinstance(other, int):
-            self.__rmul__(other)
-            return
+            raise NotImplementedError("Only multiplication vectors with scalars are handled.")
         new_values = []
         if isinstance(self.values[0], float):
             for elem in self.values:
@@ -161,7 +157,7 @@ class   Vector:
         self.values = new_values
 
     def __rmul__(self, other):
-        raise NotImplementedError("Only multiplication with scalars are handled.")
+        self.__mul__(other)
 
     def __str__(self):
         txt = "{}".format(self.values)

@@ -21,6 +21,9 @@ class   Book:
             raise ValueError("Name is not a string or doesn't contains only alphabetic and spaces characters.")
 
     def get_recipe_by_name(self, name):
+        if not isinstance(name, str):
+            print("{} is not a possible recipe name.".format(name))
+            return
         for key,values in self.recipes_list.items(): 
             for elem in values:
                 if elem.name == name:
