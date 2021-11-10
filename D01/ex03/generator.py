@@ -10,7 +10,12 @@ def generator(text, sep=".", option=None):
     elif (option == 'unique'):
         new_text = list(dict.fromkeys(new_text))
     elif (option == 'shuffle'):
-        random.shuffle(new_text)
+        i = 0
+        while i < len(new_text):
+            j = random.randint(0, len(new_text) - 1)
+            k = random.randint(0, len(new_text) - 1)
+            new_text[j], new_text[k] = new_text[k], new_text[j]
+            i += 1
     elif option:
         yield "ERROR"
         return
