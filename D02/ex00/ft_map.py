@@ -2,13 +2,15 @@ def ft_map(function_to_apply, iterable):
     try:
         iterator = iter(iterable)
     except:
-        print("ft_map received an not iterable object.")
+        print("ft_map received a non iterable object as second argument.")
         return None
-    i = 0
-    while i < len(iterable):
-        iterable[i] = function_to_apply(iterable[i])
-        yield iterable[i]
-        i += 1
+    try:
+        callable(function_to_apply)
+    except:
+        print("ft_map received a non function argument as first argument.")
+        return None
+    for value in iterator:
+        yield function_to_apply(value)
 
 x = [1, 2, 3, 4, 5]
 print(ft_map(lambda dum: dum + 1, x))
