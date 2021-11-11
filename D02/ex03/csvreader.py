@@ -55,6 +55,8 @@ class CsvReader():
 
     def getheader(self):
         header = None
+        if not self.header:
+            return header
         with open(self.filename, 'r') as file:
             datas = csv.reader(file, delimiter=self.sep, skipinitialspace=True)
             header = next(datas)
