@@ -1,0 +1,4 @@
+Ex00 : if you forgot to set last_update to creation date, it should not count as false
+Ex02 :
+- the size of the vector should have (b - a) element instead of (b - a + 1) in "a tuple of two integers, (a, b), with a < b: vector of (b - a + 1) elements should be created with values laying between a and b included."
+- this point "a tuple of two integers (a, a): vector with one element must be created containing the value a." is false, ignore it

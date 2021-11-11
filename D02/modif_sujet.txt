@@ -1,0 +1,15 @@
+MODULE 02 - ex01: args and kwargs?
+Attention à une typo dans la section examples:
+Le dernier appel à what_are_the_vars vous avez var_0 = "world" (donc /!\ aux var_[X])
+if __name__ == "__main__":
+    obj = what_are_the_vars(7)
+    doom_printer(obj)
+    obj = what_are_the_vars("ft_lol", "Hi")
+    doom_printer(obj)
+    obj = what_are_the_vars()
+    doom_printer(obj)
+    obj = what_are_the_vars(12, "Yes", [0, 0, 0], a=10, hello="world")
+    doom_printer(obj)
+    obj = what_are_the_vars(42, a=10, var_0="world")
+    doom_printer(obj)
+

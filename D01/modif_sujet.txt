@@ -1,0 +1,35 @@
+Eratum:
+Considérez que c'est une méthode qui doit raise une erreur:
+2.0 / Vector([[1.0], [2.0]])
+# Output:
+ValueError("A scalar cannot be divided by a Vector")
+
+pour le dernier exo du module01:
+Utiliser ce code pour account
+class Account(object):
+	ID_COUNT = 1
+
+	def __init__(self, name, **kwargs):
+		self.id = self.ID_COUNT
+		self.name = name
+		self.__dict__.update(kwargs)
+		Account.ID_COUNT += 1
+
+
+	def transfer(self, amount):
+		self.value += amount
+
+
+
+Ex00 : if you forgot to set last_update to creation date, it should not count as false
+
+Ex02 :
+- the size of the vector should have (b - a) element instead of (b - a + 1) in "a tuple of two integers, (a, b), with a < b: vector of (b - a + 1) elements should be created with values laying between a and b included."
+- this point "a tuple of two integers (a, a): vector with one element must be created containing the value a." is false, ignore it
+
+Module 01 - ex03: Generator!
+Comme le souligne @gbradel il y a 2 incohérences:
+La signature de la fonction generator devient:
+def generator(text, sep, option=None):
+Vous devez aussi yield quand option=unique:
+unique: words appears only once (take a look to set)

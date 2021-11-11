@@ -1,0 +1,22 @@
+N'UTILISEZ PAS LE SCRIPT D'INSTALLATION DE CONDA SUR MAC FOURNI PAR LE SUJET !!!
+Use this instead:
+curl -LO "https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh"
+sh Miniconda3-latest-MacOSX-x86_64.sh -p /goinfre/miniconda3
+# Dites yes pour le conda init a la fin de l'installation
+
+La commande qui détruit votre PATH est:
+$>export PATH=\$MINICONDA_PATH:\$PATH
+NE LA FAITE PAS.
+FAITE LA COMMANDE SUIVANTE:
+$>export PATH=$MINICONDA_PATH:$PATH
+
+module00, ex01; dans les examples, il faut changer la premiere ligne: [python exec.py "Hello World!" | cat -e] par la suivante -> [python exec.py "Hello World\!" | cat -e] (car le point d'exclamation sur linux n'est pas pris en compte de la meme maniere que sur mac)
+
+Module Python 00 -- Exercice 07: Shorter, faster, pythonest
+$> python filterwords.py 300 3
+ERROR
+N'est plus considéré comme une erreur.
+Une liste vide est donc attendue:
+$> python filterwords.py 300 3
+[]
+
