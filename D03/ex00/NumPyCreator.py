@@ -1,61 +1,35 @@
-import numpy
+import numpy as np
 import random
+
+from numpy.core.fromnumeric import nonzero
+from numpy.lib.arraysetops import isin
 
 class   NumPyCreator():
 
-    def from_list(self, lst, *args):
-        if not args and isinstance(lst, list):
-            dtype=object
-            if isinstance(lst[0], list):
-                size = -1
-                for row in lst:
-                    if size == -1:
-                        size = len(row)
-                    if len(row) != size:
-                        print("from_list received list containing elements of differents sizes.")
-                        return None
-                    if any(isinstance(elem, str) for elem in row):
-                        dtype='<U21'
-            if any(isinstance(value, str) for value in lst):
-                dtype='<U21'
-            array = numpy.asarray(lst, dtype=dtype)
-            return array
-        else:
-            print("from_list received a non list argument.")
+    def from_list(self, lst, dtype=None):
+        if not isinstance(lst, list):
             return None
+        if isinstance(lst[0], list):
+            for row in lst:
+                if len(row) != len(lst[0]):
+                    return None
+        return np.asarray(lst,dtype=object)
 
-    def from_tuple(self, tpl):
-        if isinstance(tpl, tuple):
-            return numpy.asarray(tpl)
-        else:
-            print("from_tuple received a non tuple argument.")
+    def from_tuple(self, tpl, dtype=None):
+        if not isinstance(tpl, tuple):
             return None
+        return np.asarray(tpl)
 
-    def from_iterable(self, itr):
-        try:
-            iterator = iter(itr)
-            return numpy.fromiter(itr, int)
-        except:
-            print("from_iterable received a non iterable argument.")
+    def from_iterable(self, itr, dtype=None):
+        if not iter(itr):
             return None
+        return np.fromiter(itr, dtype)
 
-    def from_shape(self, shape, value = 0):
-        if isinstance(shape, tuple):
-            return numpy.full(shape, value)
-        else:
-            print("from_shape received a non tuple argument.")
-            return None
+    def from_shape(self, shape, value = 0, dtype=None):
+        return np.full(shape, value, dtype=dtype)
 
-    def random(self, shape):
-        if isinstance(shape, tuple):
-            return numpy.random.rand(*shape)
-        else:
-            print("random received a non tuple argument.")
-            return None
+    def random(self, shape, dtype=None):
+        return np.random.rand(*shape).astype(dtype)
 
-    def identity(self, n):
-        if isinstance(n, int):
-            return numpy.identity(n)
-        else:
-            print("identity received a non integer argument.")
-            return None
+    def identity(self, n, dtype=None):
+        return np.identity(n, dtype=dtype)
