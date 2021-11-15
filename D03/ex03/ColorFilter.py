@@ -85,10 +85,9 @@ class ColorFilter():
         array[:, :, 0] *= rgb_weights[0]
         array[:, :, 1] *= rgb_weights[1]
         array[:, :, 2] *= rgb_weights[2]
-        sm = np.sum(array, axis=2)
-        print("Sum is {} || END".format(sm))
-        ret = np.tile(sm[:, :, None], (1, 1, 3))
-        return ret
+        sum_colors = np.sum(array, axis=2)
+        array = np.tile(sum_colors[:, :, None], (1, 1, 3))
+        return array
 
 
 imp = ImageProcessor()
