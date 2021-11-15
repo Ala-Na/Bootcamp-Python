@@ -1,0 +1,63 @@
+MODULE 03 exercice 00:
+Il y a une coquille pour la méthode from_iterable:
+npc.from_iterable(range(5))
+range n’est pas un objet de type itérable.
+npc.from_iterable(iter(range(5)))
+Avec l’application de la méthode iter les objets list , tuple et range  deviennent des itérables
+Vous pouvez accéder aux valeurs avec la méthode next jusqu’à l’exception StopIterration
+Uniquement un itérable construit avec une list, un tuple et range est attendu !!!
+
+MODULE 03 exercice 02 - ScrapBooker
+Il y a une erreur dans la section exemple pour la méthode thin:
+arr2 = np.array("A B C D E F G H I".split() * 6).reshape(-1,9)
+spb.thin(arr2,3,0)
+#Output
+array([['A', 'B', 'D', 'E', 'G', 'H', 'J', 'K'],
+['A', 'B', 'D', 'E', 'G', 'H', 'J', 'K'],
+['A', 'B', 'D', 'E', 'G', 'H', 'J', 'K'],
+['A', 'B', 'D', 'E', 'G', 'H', 'J', 'K'],
+['A', 'B', 'D', 'E', 'G', 'H', 'J', 'K'],
+['A', 'B', 'D', 'E', 'G', 'H', 'J', 'K']], dtype='<U1')
+Un bon exemple :
+perform thin with n=3 and axis=0:
+ABCDEFGHIJQL        ABDEGHJQ
+ABCDEFGHIJQL        ABDEGHJQ
+ABCDEFGHIJQL        ABDEGHJQ
+ABCDEFGHIJQL        ABDEGHJQ
+ABCDEFGHIJQL        ABDEGHJQ
+ABCDEFGHIJQL  ==>   ABDEGHJQ
+ABCDEFGHIJQL        ABDEGHJQ
+ABCDEFGHIJQL        ABDEGHJQ
+ABCDEFGHIJQL        ABDEGHJQ
+ABCDEFGHIJQL        ABDEGHJQ
+ABCDEFGHIJQL        ABDEGHJQ
+
+perform thin with n=4 and axis=1:
+AAAAAAAAAAAA        
+BBBBBBBBBBBB        AAAAAAAAAAAA
+CCCCCCCCCCCC        BBBBBBBBBBBB
+DDDDDDDDDDDD        CCCCCCCCCCCC
+EEEEEEEEEEEE        EEEEEEEEEEEE
+FFFFFFFFFFFF  ==>   FFFFFFFFFFFF
+GGGGGGGGGGGG        GGGGGGGGGGGG
+HHHHHHHHHHHH        IIIIIIIIIIII
+IIIIIIIIIIII        JJJJJJJJJJJJ
+JJJJJJJJJJJJ        KKKKKKKKKKKK
+KKKKKKKKKKKK        
+LLLLLLLLLLLL  
+
+Pour mosaic:
+arr = np.array([['A', 'B']['C', 'D']])
+arr
+# Output:
+array(['A', 'B'],
+      ['C', 'D'])
+
+mosaic(arr, (3,2))
+# Output:
+array(['A', 'B', 'A', 'B'],
+      ['C', 'D', 'C', 'D'],
+      ['A', 'B', 'A', 'B'],
+      ['C', 'D', 'C', 'D'],
+      ['A', 'B', 'A', 'B'],
+      ['C', 'D', 'C', 'D'])
