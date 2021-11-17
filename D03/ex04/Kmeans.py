@@ -1,11 +1,9 @@
-import numpy as np
-import sys
 
-from numpy.lib.arraysetops import isin
-from numpy.ma.core import set_fill_value
+import sys
 from csvreader import CsvReader
 import random
 import matplotlib.pyplot as plt
+from matplotlib.lines import Line2D
 import numpy as np
 
 class KmeansClustering:
@@ -84,34 +82,137 @@ class KmeansClustering:
             features[list_index].append(mean_weight)
             features[list_index].append(mean_density)
         features_vector = np.array(features) 
-        return features_vector
+        return features_vector     
 
-    def fit(self, X):
-        clusters = self._Kmeans_algo(X)
-        print(clusters)
-        features = self._means_features(X, clusters)
-        print(features)
+    def _get_citizenship(self, features):
         tallest = 0
         less_density = 0
+        thinest = 0
         for area in range(len(features)):
             if features[area][0] > features[tallest][0]:
                 tallest = area
             if features[area][2] < features[less_density][2]:
                less_density = area
-        print(tallest)
-        print(less_density)
         if tallest != less_density:
             diff_tall = features[tallest][0] - features[less_density][0]
             diff_dens = features[tallest][2] - features[less_density][2]
-            print(diff_tall)
-            print(diff_dens*100)
             if diff_tall > diff_dens*100:
                 belt = tallest
             else:
                 belt = less_density
         else:
             belt = tallest
-        print(belt)
+        if belt != 0:
+            tallest = 0
+        else:
+            tallest = 1
+            thinest = 1
+        for area in range(len(features)):
+            if features[area][0] > features[tallest][0] and area != belt:
+                tallest = area
+            if features[area][1] < features[thinest][1] and area != belt:
+                thinest = area
+        if tallest != thinest:
+            venus = thinest
+            mars = tallest
+        else:
+            venus = thinest
+            mars = -1
+        if (belt == 0 and venus == 1) or (belt == 1 or venus == 0):
+            tallest = 2
+        elif belt == 0 or venus == 0:
+            tallest = 1
+        else:
+            tallest = 0
+        for area in range(len(features)):
+            if features[area][0] > features[tallest][0] and area != belt and area != venus:
+                tallest = area
+        mars = tallest
+        for area in range(len(features)):
+            if area != belt and area != venus and area != mars:
+                earth = area
+        citizenship_index = ["" for x in range(len(features))]
+        for area in range(len(features)):
+            if area == earth:
+                citizenship_index[area] = 'United Nations of Earth'
+            elif area == mars:
+                citizenship_index[area] = 'Mars Republic'
+            elif area == venus:
+                citizenship_index[area] = 'The flying cities of Venus'
+            else:
+                citizenship_index[area] = 'Ateroids\' Belt colonies'
+        return citizenship_index
+
+    def _rep_citizens(self, X, clusters, features, citizenship_index):
+        vector_res = [-1] * len(X)
+        for index in range(len(clusters)):
+            for citizen in clusters[index]:
+                vector_res[citizen] = index
+        fig = plt.figure(figsize=(100,100))
+        ax = plt.axes(projection='3d')
+        mars_color = 'xkcd:crimson'
+        label_mars = "Mars"
+        venus_color = 'xkcd:olive'
+        label_venus = "Venus"
+        earth_color = 'xkcd:sky blue'
+        label_earth = "Earth"
+        belt_color = 'xkcd:golden yellow'
+        label_belt = "Belt"
+        ax.set_title('Citizens of Solar System',color='0.1')
+        for point in range(len(X)):
+            if label_earth in citizenship_index[vector_res[point]]:
+                color = earth_color
+                label = label_earth
+            elif label_mars in citizenship_index[vector_res[point]]:
+                color = mars_color
+                label = label_mars
+            elif label_venus in citizenship_index[vector_res[point]]:
+                color = venus_color
+                label = label_venus
+            else:
+                color = belt_color
+                label = label_belt
+            ax.scatter(X[point][0], X[point][1], X[point][2], color=color)
+        for feat in range(len(features)):
+            if "Earth" in citizenship_index[feat]:
+                color = 'b'
+                label = "Earth centroid"
+            elif "Mars" in citizenship_index[feat]:
+                color = 'r'
+                label = "Mars centroid"
+            elif "Venus" in citizenship_index[feat]:
+                color = 'g'
+                label = "Venus centroid"
+            else:
+                color = 'y'
+                label = "Belt centroid"
+            ax.scatter(features[feat][0], features[feat][1], features[feat][2], color=color, label=label)
+        custom_legend = [plt.Line2D([0], [0], marker='o', color=earth_color, label=label_earth), \
+            plt.Line2D([0], [0], marker='o', color=belt_color, label=label_belt), \
+            plt.Line2D([0], [0], marker='o', color=venus_color, label=label_venus), \
+            plt.Line2D([0], [0], marker='o', color=mars_color, label=label_mars)]
+        legend = ax.legend(handles=custom_legend, loc="upper right", title = "Citizens")
+        centroid_legend = [plt.Line2D([0], [0], marker='o', color='b', label=label_earth), \
+            plt.Line2D([0], [0], marker='o', color='y', label=label_belt), \
+            plt.Line2D([0], [0], marker='o', color='g', label=label_venus), \
+            plt.Line2D([0], [0], marker='o', color='r', label=label_mars)]
+        ax.add_artist(legend)
+        ax.legend(handles=centroid_legend, loc="lower left", title = "Centroid")
+        plt.show()
+
+    def fit(self, X):
+        clusters = self._Kmeans_algo(X)
+        features = self._means_features(X, clusters)
+        if (self.ncentroid != 4):
+            for area in range(self.ncentroid):
+                print("Area {:3} : Total of {:3} citizens, with mean heigh of {:6.2f}, mean weight of {:6.2f} and mean bone density of {:4.2f}."\
+                    .format(area + 1, len(clusters[area]), features[area][0], features[area][1], features[area][2]))
+        else:
+            citizenship_index = self._get_citizenship(features)
+            for area in range(self.ncentroid):
+                print("{:27} : Total of {:3} citizens, with mean heigh of {:6.2f}, mean weight of {:6.2f} and mean bone density of {:4.2f}."\
+                    .format(citizenship_index[area], len(clusters[area]), features[area][0], features[area][1], features[area][2]))
+            self._rep_citizens(X, clusters, features, citizenship_index)
         return None
 
 def check_argument(*args):
@@ -161,3 +262,4 @@ if __name__ == "__main__":
     else:
         cluster = KmeansClustering(ncentroid=ncentroid, max_iter=max_iter)
     cluster.fit(datas)
+    cluster.predict(datas)
