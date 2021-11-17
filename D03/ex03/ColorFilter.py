@@ -32,7 +32,6 @@ class ColorFilter():
     def to_celluloid(self, array):
         assert isinstance(array, np.ndarray), "to_celluloid received a non numpy array as argument."
         mask = np.linspace(0.0, 1.0, num=4)
-        print(mask)
         array[array >= mask[3]] = mask[3]
         array[(array > mask[2]) & (array < mask[3])] = mask[2]
         array[(array > mask[1]) & (array < mask[2])] = mask[1]
