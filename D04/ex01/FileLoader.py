@@ -1,7 +1,7 @@
 import pandas as pd
 import os
 
-class FileLoader:
+class FileLoader():
 
     def load(self, path):
         if not os.path.isfile(path):
