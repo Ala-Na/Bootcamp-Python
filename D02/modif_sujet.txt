@@ -13,3 +13,15 @@ if __name__ == "__main__":
     obj = what_are_the_vars(42, a=10, var_0="world")
     doom_printer(obj)
 
+MODULE ML 02 - ex 00 & 01:
+np.arange(1,13).reshape(4,)
+entraine une erreur, vous devez considérer:
+np.arange(1,13).reshape(4,-1)
+Ensuite pour les exemples vous constaterez qu’il y a une incohérence entre la shape de theta et celle attendue par la fonction. Fiez vous à la shape attendue par la fonction (numpy aray 2D de shape (n+1, 1)).
+Enfin, l’output aussi, celui-ci doit être un numpy array 2D de shape (m, 1)
+coche_blanche
+yeux
+alléluia
+
+M02E04: Xil y a une erreur dans la commande, la bonne commande est:
+python -m venv tmp_env
