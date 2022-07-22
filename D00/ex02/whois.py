@@ -1,7 +1,9 @@
 import sys
 
 argc = len(sys.argv)
-if (argc != 2 or not sys.argv[1].isdigit()):
+if (argc < 2):
+    exit()
+elif (argc != 2 or not sys.argv[1].isdigit()):
     print("ERROR")
 elif (int(sys.argv[1]) == 0):
     print("I'm Zero.")
