@@ -1,4 +1,6 @@
-pip freeze
+
 pip list
 pip show numpy
-pip_search tesseract
+pip uninstall numpy
+pip install numpy
+pip freeze
