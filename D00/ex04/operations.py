@@ -35,7 +35,7 @@ def doModulo(int_a, int_b):
 
 def doOperations(str_a, str_b):
     if (not checkInt(str_a) or not checkInt(str_b)):
-        print("InputError: only numbers\n")
+        print("InputError: only integers\n")
         usageMessage()
         return
     int_a = (int)(str_a, 10)

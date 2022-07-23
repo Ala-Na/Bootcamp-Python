@@ -30,6 +30,6 @@ text = (sys.argv[1]).translate(str.maketrans('', '', string.punctuation))
 list_words = text.split()
 res = filterWords(list_words, (int)(sys.argv[2]))
 if not res:
-    print("ERROR")
+    print("[]")
 else:
     print(res)
