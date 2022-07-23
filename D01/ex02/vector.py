@@ -4,86 +4,27 @@ class   Vector:
 
     def __init__(self, floats):
         self.values = []
-        if isinstance(floats, int):
-            self.__init_from_size__(floats)
-        elif isinstance(floats, list):
-            for elem in floats:
-                if not isinstance(elem, list):
-                    self.__init_from_list_of_float__(floats)
-                    return
-                else:
-                    self.__init_from_list_of_list_of_float__(floats)
-                    return
-        elif isinstance(floats, tuple):
-            self.__init_from_range__(floats)
-        else:
-            raise ValueError("{} not in correct format.".format(floats))
-
-    def __init_from_list_of_float__(self, floats):
-        for elem in floats:
-            if isinstance(elem, float):
-                self.values.append(elem)
-            else:
-                raise ValueError("{} is not in correct format.".format(elem))
-        self.shape = (len(self.values), 1)
-
-    def __init_from_list_of_list_of_float__(self, floats):
         for elem in floats:
             for sub_elem in elem:
                 if not isinstance(sub_elem, float):
                     raise ValueError("{} is not in correct format.".format(sub_elem))
         for elem in floats:
             self.values.append(elem)
-        self.shape = (1, len(self.values))
-
-    def __init_from_size__(self, floats):
-        elem = 0
-        while elem < floats:
-            sub_list = []
-            sub_list.append(float(elem))
-            self.values.append(sub_list)
-            elem += 1
-        self.shape = (1, len(self.values))
-    
-    def __init_from_range__(self, floats):
-        i = 0
-        for elem in floats:
-            if not isinstance(elem, int) or i > 2:
-                raise ValueError("{} is not in correct format.".format(elem))
-            i += 1
-        if (i != 2):
-            raise ValueError("{} is not in correct format.".format(floats))
-        for f in range(floats[0], floats[1]):
-            sub_list = []
-            sub_list.append(float(f))
-            self.values.append(sub_list)
-            f += 1
-        self.shape = (1, len(self.values))
+        self.shape = (len(self.values), len(self.values[0]))
 
     def T(self):
-        self.shape = (self.shape[1], self.shape[0])
-        for elem in self.values:
-            if isinstance(elem, list):
-                self.__T_row__()
-                return
-            else:
-                self.__T_column__()
-                return
-
-    def __T_row__(self):
         new_values = []
-        for elem in self.values:
-           for sub_elem in elem:
-               new_values.append(sub_elem)
-        self.values = new_values
-
-    def __T_column__(self):
-        new_values = []
-        for elem in self.values:
+        if self.shape[0] == 1:
+            for row in self.vector_list:
+                for column in row:
+                    new_values.append([column])
+        else:
             sub_new_values = []
-            sub_new_values.append(elem)
+            for row in self.values:
+                for col in row:
+                    sub_new_values.append(col)
             new_values.append(sub_new_values)
-        self.values = new_values
+        return Vector(new_values)
 
     def __add__(self, other):
         if not isinstance(other, Vector):
@@ -98,8 +39,8 @@ class   Vector:
         else:
             for elem, elem_ot in zip(self.values, other.values):
                 new_values.append(list(map(add, elem, elem_ot)))
-        self.values = new_values
-        
+        return Vector(new_values)
+
     def __radd__(self, other):
         raise NotImplementedError("Vectors can only be additionned with other vectors.")
 
@@ -116,15 +57,15 @@ class   Vector:
         else:
             for elem, elem_ot in zip(self.values, other.values):
                 new_values.append(list(map(sub, elem, elem_ot)))
-        self.values = new_values
-        
+        return Vector(new_values)
+
     def __rsub__(self, other):
         raise NotImplementedError("No substraction by vector.")
 
     def __truediv__(self, other):
-        if not isinstance(other, int) or other == 0:
-            if not isinstance(other, int):
-                raise NotImplementedError("Only division with scalars are handled.")
+        if not isinstance(other, int) and not (isinstance(other, float) and other.is_integer()):
+            raise NotImplementedError("Only division with scalars are handled.")
+        if other == 0:
             raise ZeroDivisionError("Can't divide by a zero !")
         new_values = []
         if isinstance(self.values[0], float):
@@ -136,16 +77,16 @@ class   Vector:
                     sub_new_values = []
                     sub_new_values.append(sub_elem / other)
                     new_values.append(sub_new_values)
-        self.values = new_values
+        return Vector(new_values)
 
     def __rtruediv__(self, other):
         raise NotImplementedError("Can't divide by vector.")
 
     def __mul__(self, other):
-        if not isinstance(other, int):
+        if not isinstance(other, int) or (isinstance(other, float) and not other.is_integer()):
             raise NotImplementedError("Only multiplication vectors with scalars are handled.")
         new_values = []
-        if isinstance(self.values[0], float):
+        if isinstance(self.values[0], float) or len(self.values[0]) == 1:
             for elem in self.values:
                 new_values.append(elem * other)
         else:
@@ -154,7 +95,7 @@ class   Vector:
                     sub_new_values = []
                     sub_new_values.append(sub_elem * other)
                     new_values.append(sub_new_values)
-        self.values = new_values
+        return Vector(new_values)
 
     def __rmul__(self, other):
         self.__mul__(other)
@@ -186,12 +127,12 @@ class   Vector:
         return res
 
 
-        
-           
 
 
-#Column vectors : list of list of float 
-#Row vectors : list of float 
+
+
+#Column vectors : list of list of float
+#Row vectors : list of float
 #Shape for column : (nb_elem, 1)
 #Shape for row : (1, nb_elem)
 
