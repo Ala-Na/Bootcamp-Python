@@ -4,6 +4,12 @@ class   Vector:
 
     def __init__(self, floats):
         self.values = []
+        if isinstance(floats, int):
+            self.__init_from_size__(floats)
+            return
+        elif isinstance(floats, tuple):
+            self.__init_from_range__(floats)
+            return
         for elem in floats:
             for sub_elem in elem:
                 if not isinstance(sub_elem, float):
@@ -11,6 +17,30 @@ class   Vector:
         for elem in floats:
             self.values.append(elem)
         self.shape = (len(self.values), len(self.values[0]))
+
+    def __init_from_size__(self, floats):
+        elem = 0
+        while elem < floats:
+            sub_list = []
+            sub_list.append(float(elem))
+            self.values.append(sub_list)
+            elem += 1
+        self.shape = (1, len(self.values))
+
+    def __init_from_range__(self, floats):
+        i = 0
+        for elem in floats:
+            if not isinstance(elem, int) or i > 2:
+                raise ValueError("{} is not in correct format.".format(elem))
+            i += 1
+        if (i != 2):
+            raise ValueError("{} is not in correct format.".format(floats))
+        for f in range(floats[0], floats[1]):
+            sub_list = []
+            sub_list.append(float(f))
+            self.values.append(sub_list)
+            f += 1
+        self.shape = (1, len(self.values))
 
     def T(self):
         new_values = []
