@@ -35,6 +35,8 @@ class   Vector:
             i += 1
         if (i != 2):
             raise ValueError("{} is not in correct format.".format(floats))
+        if (floats[0] >= floats[1]):
+            raise ValueError("{} is not in correct format.".format(floats))
         for f in range(floats[0], floats[1]):
             sub_list = []
             sub_list.append(float(f))

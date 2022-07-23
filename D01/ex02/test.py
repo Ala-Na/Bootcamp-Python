@@ -97,6 +97,8 @@ def main():
     print('Vector 1:', v1)
     print("Vector 2:", v2)
     print('Dot product vector 1 by vector 2:', v1.dot(v2))
+    print('Addition:', v1 + v2)
+    print('Substraction:', v1 - v2)
     # Expected output:
     # 18.0
 
@@ -106,9 +108,14 @@ def main():
     print('Vector 3:', v3)
     print("Vector 4:", v4)
     print('Dot product vector 3 by vector 4:', v3.dot(v4))
+    print('Addition:', v3 + v4)
+    print('Substraction:', v3 - v4)
     # Expected output:
     # 13.0
     # /!\ 14.0 and not 13.0 as subject because 1*2 + 4*3 = 14
+
+    #print('Addition:', v1 + v4)
+    #print('Substraction:', v2 - v4)
 
     print("")
     print(repr(v1))
@@ -118,6 +125,17 @@ def main():
     print(v1)
     # Expected output: to see what __str__() should do
     # [[0.0, 1.0, 2.0, 3.0]]
+
+    print("")
+    v1 = Vector(3)
+    print("Vector of size 3:", v1)
+
+    print("")
+    v1 = Vector((10, 16))
+    print("Vector of range 10-16:", v1)
+
+    print("")
+    #v1 = Vector((18, 16))
 
 if __name__ == "__main__":
     main()
