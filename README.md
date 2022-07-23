@@ -10,4 +10,5 @@ Vector and matrix concepts are covered.
 # Libraries used
 - Pandas
 - MatPlotLib
+- Numpy
 
