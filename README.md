@@ -5,8 +5,10 @@ Bootcamp proposed by 42AI association, now available as a after common-core proj
 
 # Purpose
 A one week bootcamp to learn python basis, followed by a one week bootcamp on machine learning.
+Vector and matrix concepts are covered.
 
 # Libraries used
 - Pandas
 - MatPlotLib
+- Numpy
 
