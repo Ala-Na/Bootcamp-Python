@@ -39,4 +39,4 @@ Vector and matrix concepts are covered.
 - Numpy
 
 # Credits
-	➡️ [42AI](https://github.com/42-AI)
+   ➡️ [42AI](https://github.com/42-AI)
