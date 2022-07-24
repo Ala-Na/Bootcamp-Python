@@ -1,10 +1,14 @@
 import csv
+import os
 
 class CsvReader():
 
     def __init__(self, filename=None, sep=',', header=False, skip_top=0, skip_bottom=0):
+        if not os.path.isfile(filename):
+            print("File not found")
+            return
         self.filename = filename
-        self.sep = sep 
+        self.sep = sep
         self.file = None
         self.header = header
         self.skip_top = skip_top
