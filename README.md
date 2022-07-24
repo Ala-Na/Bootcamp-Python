@@ -1,7 +1,7 @@
 # Bootcamp-Python
 <p align="center">
 <img width="300" height="160" src="https://user-images.githubusercontent.com/67599180/180600145-12f92de1-f618-48c9-8e75-37854954f82a.png">
-<img width="300" height="160" src="https://user-images.githubusercontent.com/67599180/180652205-5f2c60d7-3d4e-4aa0-ab4a-01a28892b8e3.png">
+<img width="160" height="160" src="https://user-images.githubusercontent.com/67599180/180652205-5f2c60d7-3d4e-4aa0-ab4a-01a28892b8e3.png">
  </p>
 
 Bootcamp proposed by 42AI association, now available as a after common-core project at Paris 42 school.
