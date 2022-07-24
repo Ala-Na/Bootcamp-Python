@@ -38,5 +38,6 @@ Vector and matrix concepts are covered.
 - MatPlotLib
 - Numpy
 
+
 # Credits
    ➡️ [42AI](https://github.com/42-AI)
