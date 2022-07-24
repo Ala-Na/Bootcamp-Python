@@ -2,7 +2,7 @@ import time
 from random import randint
 import os
 
-def log(func, * _args):
+def log(func):
     f = open('machine.log', 'r+')
     f.truncate(0)
     id = os.getlogin()
