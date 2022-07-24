@@ -7,7 +7,7 @@ Bootcamp proposed by 42AI association, now available as a after common-core proj
 
 Please, find more informations and credits at [42AI corresponding page](https://github.com/42-AI/bootcamp_python)
 
-# Purpose
+## Purpose
 A one week bootcamp to learn python basis, followed by a one week bootcamp on machine learning.
 Vector and matrix concepts are covered.
 
@@ -33,7 +33,7 @@ Vector and matrix concepts are covered.
 **Time to use a Python library that will allow you to manipulate dataframes.**
 > Pandas! And Bamboos! :panda_face:
 
-# Libraries used
+## Libraries used
 - Pandas
 - MatPlotLib
 - Numpy
