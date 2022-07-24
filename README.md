@@ -4,7 +4,7 @@
  </p>
 
 Bootcamp proposed by 42AI association, now available as a after common-core project at Paris 42 school.
-Please, find more informations and credits at [42AI corresponding page]https://raw.githubusercontent.com/42-AI/bootcamp_python/)
+Please, find more informations and credits at [42AI corresponding page](https://github.com/42-AI/bootcamp_python)
 
 # Purpose
 A one week bootcamp to learn python basis, followed by a one week bootcamp on machine learning.
