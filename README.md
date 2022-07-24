@@ -1,5 +1,5 @@
 # Bootcamp-Python
-  ![42AI](https://user-images.githubusercontent.com/67599180/180600145-12f92de1-f618-48c9-8e75-37854954f82a.png)
+        ![42AI](https://user-images.githubusercontent.com/67599180/180600145-12f92de1-f618-48c9-8e75-37854954f82a.png)
 
 Bootcamp proposed by 42AI association, now available as a after common-core project at Paris 42 school.
 
