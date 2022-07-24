@@ -4,6 +4,7 @@
  </p>
 
 Bootcamp proposed by 42AI association, now available as a after common-core project at Paris 42 school.
+
 Please, find more informations and credits at [42AI corresponding page](https://github.com/42-AI/bootcamp_python)
 
 # Purpose
@@ -37,3 +38,5 @@ Vector and matrix concepts are covered.
 - MatPlotLib
 - Numpy
 
+# Credits
+[42AI]](https://github.com/42-AI)
