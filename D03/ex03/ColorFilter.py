@@ -9,9 +9,10 @@ from ImageProcessor import ImageProcessor
 class ColorFilter():
 
     def invert(self, array):
-        assert isinstance(array, np.ndarray), "invert received a non numpy array as argument."
+        if not isinstance(array, np.ndarray):
+            return None
         return (1 - array)
-    
+
     def to_blue(self, array):
         assert isinstance(array, np.ndarray), "to_blue received a non numpy array as argument."
         blue = np.zeros(array.shape)
@@ -28,7 +29,7 @@ class ColorFilter():
     def to_red(self, array):
         assert isinstance(array, np.ndarray), "to_red received a non numpy array as argument."
         return array - self.to_green(array) - self.to_blue(array)
-    
+
     def to_celluloid(self, array):
         assert isinstance(array, np.ndarray), "to_celluloid received a non numpy array as argument."
         mask = np.linspace(0.0, 1.0, num=4)
@@ -51,12 +52,12 @@ class ColorFilter():
         if filter in ['w', 'weight']:
             if len(kwargs) != 1:
                 print("to_greyscale: not enough or too much arguments for w/weight filter.")
-                return False  
-            for elem, value in kwargs.items(): 
+                return False
+            for elem, value in kwargs.items():
                 if not isinstance(value, list) or len(value) != 3:
                     print("to_greyscale: received a non list of three float as argument.")
-                    return False 
-                total = 0 
+                    return False
+                total = 0
                 for sub_value in value:
                     if not isinstance(sub_value, float):
                         print("to_greyscale: at least one argument is not a float for filter w/weight.")
@@ -87,16 +88,3 @@ class ColorFilter():
         sum_colors = np.sum(array, axis=2)
         array = np.tile(sum_colors[:, :, None], (1, 1, 3))
         return array
-
-
-imp = ImageProcessor()
-cf = ColorFilter()
-img = imp.load("../42AI.png")
-arr = cf.to_grayscale(img, 'm')
-if arr is not None:
-    print(arr)
-    imp.display(arr)
-arr = cf.to_grayscale(img, 'w', lst=[0.30, 0.60, 0.10])
-if arr is not None:
-    print(arr)
-    imp.display(arr)

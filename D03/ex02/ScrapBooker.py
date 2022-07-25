@@ -1,11 +1,4 @@
-import matplotlib.pyplot as plt
-import matplotlib.image as mpimg
 import numpy as np
-import os
-import importlib.util
-
-from numpy.lib import arrayterator
-from ImageProcessor import ImageProcessor
 
 class ScrapBooker():
 
@@ -74,24 +67,3 @@ class ScrapBooker():
             print("mosaic received a non tuple of two integers as second argument.")
             return None
         return np.tile(array, dim)
-
-spb = ScrapBooker()
-arr1 = np.arange(0,25).reshape(5,5)
-arr1 = spb.crop(arr1, (3,1),(1,0))
-print("{}\n".format(arr1))
-
-arr2 = np.array("A B C D E F G H I J K L M N O Q".split() * 10).reshape(-1,16)
-letter = ord('A')
-for row in arr2:
-    row[0] = chr(letter)
-    letter += 1
-arr2 = spb.thin(arr2,4,1)
-print("{}\n".format(arr2))
-
-arr3 = np.array([[1, 2, 3],[1, 2, 3],[1, 2, 3]])
-arr3 = spb.juxtapose(arr3, 3, 1)
-print("{}\n".format(arr3))
-
-arr4 = np.array([[1, 2],[3, 4]])
-arr4 = spb.mosaic(arr4, (4, 4))
-print("{}\n".format(arr4))

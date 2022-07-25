@@ -23,10 +23,3 @@ class ImageProcessor():
         plt.axis('off')
         plt.imshow(array)
         plt.show()
-
-
-imp = ImageProcessor()
-arr = imp.load("../42AI.png")
-if arr is not None:
-    print(arr)
-    imp.display(arr)
