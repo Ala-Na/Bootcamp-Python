@@ -46,7 +46,8 @@ class ColorFilter():
         return red
 
     def to_celluloid(self, array):
-        assert isinstance(array, np.ndarray), "to_celluloid received a non numpy array as argument."
+        if not isinstance(array, np.ndarray):
+            return None
         mask = np.linspace(0.0, 1.0, num=4)
         array[array >= mask[3]] = mask[3]
         array[(array > mask[2]) & (array < mask[3])] = mask[2]
@@ -57,7 +58,7 @@ class ColorFilter():
 
     def _check_grayscale_arguments(self, filter, **kwargs):
         if not filter in ['m', 'mean', 'w', 'weight']:
-            print("to_grayscae: incompatible filter.")
+            print("to_grayscale: incompatible filter.")
             return False
         if filter in ['m', 'mean']:
             for elem in kwargs:
@@ -78,28 +79,22 @@ class ColorFilter():
                         print("to_greyscale: at least one argument is not a float for filter w/weight.")
                         return False
                     total += sub_value
-                if total != 1:
+                if total < 0.99999 or total > 1.00001:
                     print("to_greyscale: sum of three floats values are not equal to 1.")
                     return False
         return True
 
     def to_grayscale(self, array, filter, **kwargs):
-        assert isinstance(array, np.ndarray), "to_grayscale received a non numpy array as argument."
+        if not isinstance(array, np.ndarray):
+           return None
         if not self._check_grayscale_arguments(filter, **kwargs):
             return None
         rgb_weights = []
         if filter in ['m', 'mean']:
-            r = np.sum(array[:, :, 0])
-            g = np.sum(array[:, :, 1])
-            b = np.sum(array[:, :, 2])
-            total = np.sum(array)
-            rgb_weights = [r/total, g/total, b/total]
+            rgb_weights = [1/3, 1/3, 1/3]
         else:
             for key, value in kwargs.items():
                 rgb_weights = [value[0], value[1], value[2]]
-        array[:, :, 0] *= rgb_weights[0]
-        array[:, :, 1] *= rgb_weights[1]
-        array[:, :, 2] *= rgb_weights[2]
-        sum_colors = np.sum(array, axis=2)
-        array = np.tile(sum_colors[:, :, None], (1, 1, 3))
-        return array
+        scale = np.sum(array[:, :, :3] * rgb_weights, axis=2)
+        array = np.dstack((scale, scale, scale))
+        return(array)

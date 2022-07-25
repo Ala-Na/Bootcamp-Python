@@ -25,22 +25,69 @@ blue = cf.to_blue(arr)
 if blue is not None:
     imp.display(blue)
 
-# cell = cf.to_celluloid(arr)
-# if cell is not None:
-#     imp.display(cell)
+cell = cf.to_celluloid(arr)
+if cell is not None:
+    imp.display(cell)
 
-# grey = cf.to_grayscale(arr, 'm')
-# if grey is not None:
-#     imp.display(grey)
+invert = cf.invert(1)
+if invert is not None:
+    imp.display(invert)
 
-# grey = cf.to_grayscale(arr, 'weight', weights = [0.2, 0.3, 0.5])
-# if grey is not None:
-#     imp.display(grey)
+green = cf.to_green(1)
+if green is not None:
+    imp.display(green)
 
-# grey = cf.to_grayscale(arr, 'm')
-# if grey is not None:
-#     imp.display(grey)
+red = cf.to_red(1)
+if red is not None:
+    imp.display(red)
 
-# grey = cf.to_grayscale(arr, 'w', lst=[0.30, 0.60, 0.10])
-# if grey is not None:
-#     imp.display(grey)
+blue = cf.to_blue(1)
+if blue is not None:
+    imp.display(blue)
+
+cell = cf.to_celluloid(1)
+if cell is not None:
+    imp.display(cell)
+
+grey = cf.to_grayscale(arr, 'm')
+if grey is not None:
+    imp.display(grey)
+
+grey = cf.to_grayscale(arr, 'weight', weights = [0.2, 0.3, 0.5])
+if grey is not None:
+    imp.display(grey)
+
+grey = cf.to_grayscale(arr, 'mean')
+if grey is not None:
+    imp.display(grey)
+
+grey = cf.to_grayscale(arr, 'w', lst=[0.30, 0.60, 0.10])
+if grey is not None:
+    imp.display(grey)
+
+grey = cf.to_grayscale(arr, 'mean', lst=[0.30, 0.60, 0.10])
+if grey is not None:
+    imp.display(grey)
+
+grey = cf.to_grayscale(arr, 'w')
+if grey is not None:
+    imp.display(grey)
+
+grey = cf.to_grayscale(arr, 'w', lst=[0.30, 0.00, 0.10])
+if grey is not None:
+    imp.display(grey)
+
+grey = cf.to_grayscale(arr, 'w', lst=[0.30, 'lol', 0.10])
+if grey is not None:
+    imp.display(grey)
+
+grey = cf.to_grayscale(arr, 'w', lst=[0.30, 0.00, 0.10, 0.60])
+if grey is not None:
+    imp.display(grey)
+
+
+grey = cf.to_grayscale('trololo', 'm')
+if grey is not None:
+    imp.display(grey)
+else:
+    print("arr was not a numpy array")
