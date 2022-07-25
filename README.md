@@ -34,9 +34,9 @@ Vector and matrix concepts are covered.
 > Pandas! And Bamboos! :panda_face:
 
 ## Libraries used
-- Pandas
-- MatPlotLib
 - Numpy
+- Pandas
+- matplotlib
 
 
 # Credits
