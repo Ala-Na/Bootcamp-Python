@@ -1,3 +1,5 @@
+import numpy as np
+
 from ImageProcessor import ImageProcessor
 imp = ImageProcessor()
 arr = imp.load("../resources/elon_canaGAN.png")
@@ -5,6 +7,7 @@ arr = imp.load("../resources/elon_canaGAN.png")
 from ColorFilter import ColorFilter
 
 cf = ColorFilter()
+imp.display(arr)
 
 invert = cf.invert(arr)
 if invert is not None:
@@ -22,22 +25,22 @@ blue = cf.to_blue(arr)
 if blue is not None:
     imp.display(blue)
 
-cell = cf.to_celluloid(arr)
-if cell is not None:
-    imp.display(cell)
+# cell = cf.to_celluloid(arr)
+# if cell is not None:
+#     imp.display(cell)
 
-grey = cf.to_grayscale(arr, 'm')
-if grey is not None:
-    imp.display(grey)
+# grey = cf.to_grayscale(arr, 'm')
+# if grey is not None:
+#     imp.display(grey)
 
-grey = cf.to_grayscale(arr, 'weight', weights = [0.2, 0.3, 0.5])
-if grey is not None:
-    imp.display(grey)
+# grey = cf.to_grayscale(arr, 'weight', weights = [0.2, 0.3, 0.5])
+# if grey is not None:
+#     imp.display(grey)
 
-grey = cf.to_grayscale(arr, 'm')
-if grey is not None:
-    imp.display(grey)
+# grey = cf.to_grayscale(arr, 'm')
+# if grey is not None:
+#     imp.display(grey)
 
-grey = cf.to_grayscale(arr, 'w', lst=[0.30, 0.60, 0.10])
-if grey is not None:
-    imp.display(grey)
+# grey = cf.to_grayscale(arr, 'w', lst=[0.30, 0.60, 0.10])
+# if grey is not None:
+#     imp.display(grey)

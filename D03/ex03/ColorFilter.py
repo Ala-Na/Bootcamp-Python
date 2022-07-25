@@ -6,29 +6,44 @@ from numpy.lib import arrayterator
 from numpy.lib.arraysetops import isin
 from ImageProcessor import ImageProcessor
 
+# Some infos about numpy array slicing and indexing :
+# https://www.pythoninformer.com/python-libraries/numpy/index-and-slice/
+
 class ColorFilter():
 
     def invert(self, array):
         if not isinstance(array, np.ndarray):
             return None
-        return (1 - array)
+        invert_arr = array.copy()
+        # Next step (slicing) is necessary as an image can have a RGBA channel and not only RGB
+        for third_dim in range(3):
+            invert_arr[:, :, third_dim] = 1 - array[:, :, third_dim]
+        return invert_arr
 
     def to_blue(self, array):
-        assert isinstance(array, np.ndarray), "to_blue received a non numpy array as argument."
+        if not isinstance(array, np.ndarray):
+            return None
         blue = np.zeros(array.shape)
         blue[:, :, 2:] = array[:, :, 2:]
         return blue
 
     def to_green(self, array):
-        assert isinstance(array, np.ndarray), "to_green received a non numpy array as argument."
+        if not isinstance(array, np.ndarray):
+            return None
         try :
             return array * [0, 1, 0, 1]
         except:
             return array * [0, 1, 0]
 
     def to_red(self, array):
-        assert isinstance(array, np.ndarray), "to_red received a non numpy array as argument."
-        return array - self.to_green(array) - self.to_blue(array)
+        if not isinstance(array, np.ndarray):
+            return None
+        red = array.copy()
+        green = self.to_green(array)
+        blue = self.to_blue(array)
+        for third_dim in range(3):
+            red[:, :, third_dim] = array[:, :, third_dim] - green[:, :, third_dim] - blue[:, :, third_dim]
+        return red
 
     def to_celluloid(self, array):
         assert isinstance(array, np.ndarray), "to_celluloid received a non numpy array as argument."
