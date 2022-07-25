@@ -9,21 +9,21 @@ class   NumPyCreator():
     def from_list(self, lst, dtype=None):
         if not isinstance(lst, list):
             return None
-        if isinstance(lst[0], list):
+        if len(lst) != 0 and isinstance(lst[0], list):
             for row in lst:
                 if len(row) != len(lst[0]):
                     return None
-        return np.asarray(lst,dtype=object)
+        return np.asarray(lst, dtype=dtype)
 
     def from_tuple(self, tpl, dtype=None):
         if not isinstance(tpl, tuple):
             return None
-        return np.asarray(tpl)
+        return np.asarray(tpl, dtype=dtype)
 
     def from_iterable(self, itr, dtype=None):
         if not iter(itr):
             return None
-        return np.fromiter(itr, dtype)
+        return np.fromiter(itr, dtype=dtype)
 
     def from_shape(self, shape, value = 0, dtype=None):
         return np.full(shape, value, dtype=dtype)
