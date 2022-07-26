@@ -15,12 +15,18 @@ class KmeansClustering:
         self.centroids = [] # values of the centroids
 
     def _get_init_centroids(self, X):
+        if (len(X) < self.ncentroid):
+            print("Data input too small for ncentroid number.")
+            exit()
         for i in range(0, self.ncentroid):
             point = X[random.randint(0, len(X) - 1)]
+            while any((point == centr).all() for centr in self.centroids):
+                point = X[random.randint(0, len(X) - 1)]
             self.centroids.append(point)
 
     # Manhattan distance (L1) is sum of absolute difference between 2 points
     # for each coordinate :
+    # for a(x, y, ...) and b(x, y, ...)
     # d(a,b) = |x_b - x_a| + |y_b - y_a| + ...
     def _L1(self, centroid, point):
         if (len(centroid) != len (point)):
@@ -31,27 +37,25 @@ class KmeansClustering:
     def _assignate_to_cluster(self, X):
         assignation = []
         for data in enumerate(X):
-            for centr_idx in range(self.ncentroid):
+            for centr_idx in range(len(self.centroids)):
                 distance = self._L1(self.centroids[centr_idx], data[1])
                 if (centr_idx) == 0:
                     closest_centr_idx = centr_idx
                     closest_distance = distance
-                elif distance < closest_distance:
+                if distance < closest_distance:
                     closest_distance = distance
                     closest_centr_idx = centr_idx
             assignation.append(closest_centr_idx)
         return assignation
 
-    # TO FINISH : Make means of values to obtain each new centroids coordinate
     def _update_centroids(self, X, assignation):
+        new_centr = []
         datas_per_centr = [[] for i in range(len(self.centroids))]
         for i in range(len(assignation)):
             datas_per_centr[assignation[i]].append(X[i])
-        # for centr in enumerate(datas_per_centr):
-        #     print(np.mean(centr, axis=1))
-        # print(datas_per_centr)
-        # print(np.mean(datas_per_centr))
-        return None
+        for centr in enumerate(datas_per_centr):
+            new_centr.append(np.mean(centr[1], axis=0))
+        self.centroids = new_centr
 
 
     def _recalculate_centroids(self, old_centr, clusters, X):
@@ -76,8 +80,7 @@ class KmeansClustering:
             if (assignation == prev_assignation):
                 break
             prev_assignation = assignation
-            break
-
+        print(self.centroids)
 
         # Must return clusters = list[list[elem of 1st centroid], list[elem of 2nd centroid]...]
 
