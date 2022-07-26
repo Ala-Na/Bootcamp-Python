@@ -1,4 +1,4 @@
-
+from re import A
 import sys
 from csvreader import CsvReader
 import random
@@ -19,11 +19,40 @@ class KmeansClustering:
             point = X[random.randint(0, len(X) - 1)]
             self.centroids.append(point)
 
+    # Manhattan distance (L1) is sum of absolute difference between 2 points
+    # for each coordinate :
+    # d(a,b) = |x_b - x_a| + |y_b - y_a| + ...
     def _L1(self, centroid, point):
         if (len(centroid) != len (point)):
             print("Can't compare 2 vectors of differents dimensions")
-            return -1
-        return sum([abs(centroid[i] - point[i]) for i in range (len(centroid))])
+            exit()
+        return sum(abs(a - b) for a, b in zip(centroid, point))
+
+    def _assignate_to_cluster(self, X):
+        assignation = []
+        for data in enumerate(X):
+            for centr_idx in range(self.ncentroid):
+                distance = self._L1(self.centroids[centr_idx], data[1])
+                if (centr_idx) == 0:
+                    closest_centr_idx = centr_idx
+                    closest_distance = distance
+                elif distance < closest_distance:
+                    closest_distance = distance
+                    closest_centr_idx = centr_idx
+            assignation.append(closest_centr_idx)
+        return assignation
+
+    # TO FINISH : Make means of values to obtain each new centroids coordinate
+    def _update_centroids(self, X, assignation):
+        datas_per_centr = [[] for i in range(len(self.centroids))]
+        for i in range(len(assignation)):
+            datas_per_centr[assignation[i]].append(X[i])
+        # for centr in enumerate(datas_per_centr):
+        #     print(np.mean(centr, axis=1))
+        # print(datas_per_centr)
+        # print(np.mean(datas_per_centr))
+        return None
+
 
     def _recalculate_centroids(self, old_centr, clusters, X):
         for centr_index in range(self.ncentroid):
@@ -39,23 +68,35 @@ class KmeansClustering:
 
     def _Kmeans_algo(self, X):
         self._get_init_centroids(X)
-        final_clusters = None
+        # final_clusters = None
+        prev_assignation = []
         for iter in range(self.max_iter):
-            clusters = [[] for centr in range(self.ncentroid)]
-            for elem in range(len(X)):
-                point = X[elem]
-                bestmatch = 0
-                for centr_index in range(self.ncentroid):
-
-                    distance = self._L1(self.centroids[centr_index], point)
-                    if distance < self._L1(self.centroids[bestmatch], point):
-                        bestmatch = centr_index
-                clusters[bestmatch].append(elem)
-            if clusters == final_clusters:
+            assignation = self._assignate_to_cluster(X)
+            self._update_centroids(X, assignation)
+            if (assignation == prev_assignation):
                 break
-            final_clusters = clusters
-            self.centroids = self._recalculate_centroids(self.centroids, clusters, X)
-        return clusters
+            prev_assignation = assignation
+            break
+
+
+        # Must return clusters = list[list[elem of 1st centroid], list[elem of 2nd centroid]...]
+
+        # for iter in range(self.max_iter):
+        #     clusters = [[] for centr in range(self.ncentroid)]
+        #     for elem in range(len(X)):
+        #         point = X[elem]
+        #         bestmatch = 0
+        #         for centr_index in range(self.ncentroid):
+
+        #             distance = self._L1(self.centroids[centr_index], point)
+        #             if distance < self._L1(self.centroids[bestmatch], point):
+        #                 bestmatch = centr_index
+        #         clusters[bestmatch].append(elem)
+        #     if clusters == final_clusters:
+        #         break
+        #     final_clusters = clusters
+        #     self.centroids = self._recalculate_centroids(self.centroids, clusters, X)
+        # return clusters
 
     def predict(self, X):
         '''

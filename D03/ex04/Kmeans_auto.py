@@ -19,6 +19,18 @@ class KmeansClustering:
     def fit(self, X):
         kmean = KMeans(n_clusters=self.ncentroid).fit(X)
         print(kmean.labels_)
+        # features = self._means_features(X, clusters)
+        # if (self.ncentroid != 4):
+        #     for area in range(self.ncentroid):
+        #         print("Area {:3} : Total of {:3} citizens, with mean heigh of {:6.2f}, mean weight of {:6.2f} and mean bone density of {:4.2f}."\
+        #             .format(area + 1, len(clusters[area]), features[area][0], features[area][1], features[area][2]))
+        # else:
+        #     citizenship_index = self._get_citizenship(features)
+        #     for area in range(self.ncentroid):
+        #         print("{:27} : Total of {:3} citizens, with mean heigh of {:6.2f}, mean weight of {:6.2f} and mean bone density of {:4.2f}."\
+        #             .format(citizenship_index[area], len(clusters[area]), features[area][0], features[area][1], features[area][2]))
+        #     self._rep_citizens(X, clusters, features, citizenship_index)
+        # return None
         return kmean
 
 def check_argument(*args):
@@ -41,24 +53,42 @@ if __name__ == "__main__":
     max_iter = -1
     for arg in sys.argv:
         if arg.startswith("filepath="):
-            if not filepath:
+            if filepath is None:
                 filepath = arg[len("filepath="):]
             else:
                 print("More than 1 filepath given.")
                 exit()
         if arg.startswith("ncentroid="):
             if ncentroid == -1:
-                ncentroid = (int)(arg[len("ncentroid="):])
+                try:
+                    ncentroid = (int)(arg[len("ncentroid="):])
+                except:
+                    print("Incorrect ncentroid argument")
+                    exit()
             else:
                 print("More than 1 ncentroid value given.")
                 exit()
         if arg.startswith("max_iter="):
             if max_iter == -1:
-                max_iter = (int)(arg[len("max_iter="):])
+                try:
+                    max_iter = (int)(arg[len("max_iter="):])
+                except:
+                    print("Incorrect max_iter argument")
+                    exit()
+                if max_iter <= 0:
+                    print("Incorrect max_iter argument")
+                    exit()
             else:
                 print("More than 1 max_iter value given.")
                 exit()
-    datas = np.genfromtxt(filepath, delimiter=',', skip_header=1, usecols=(1,2,3))
+    if not os.path.isfile(filepath):
+        print("Error with filepath")
+        exit()
+    try:
+        datas = np.genfromtxt(filepath, delimiter=',', skip_header=1, usecols=(1,2,3))
+    except:
+        print("File not valid")
+        exit()
     if (max_iter == -1 and ncentroid == -1):
         cluster = KmeansClustering()
     elif max_iter == -1:

@@ -1,0 +1,9 @@
+Steps for Kmeans :
+1 - Select randomly as many centroids as clusters you wish to ouput
+2 - Calculate distance for each data points to each centroids
+3 - Form clusters through distance (points with same closest centroid = one cluster)
+4 - Update centroid location through mean values of data points belonging to its cluster
+5 - Repeat until convergence
+
+Different way of calculating distance exist such as L1 distance (manhattan), L2 distance (euclidian),
+cosine similarity...
