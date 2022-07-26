@@ -58,13 +58,25 @@ class KmeansClustering:
         return clusters
 
     def predict(self, X):
+        '''
+        Predict from wich cluster each datapoint belongs to.
+        Args:
+        -----
+        X: has to be an numpy.ndarray, a matrice of dimension m * n.
+        Return:
+        -------
+        the prediction has a numpy.ndarray, a vector of dimension m * 1.
+        Raises:
+        -------
+        This function should not raise any Exception.
+        '''
         clusters = self._Kmeans_algo(X)
         vector_res = np.empty(X.shape[0])
         for index in range(len(clusters)):
             for citizen in clusters[index]:
                 vector_res[citizen] = index
         return vector_res
-        
+
     def _means_features(self, X, clusters):
         features =  [[] for area in range(self.ncentroid)]
         for list_index in range(self.ncentroid):
@@ -81,8 +93,8 @@ class KmeansClustering:
             features[list_index].append(mean_height)
             features[list_index].append(mean_weight)
             features[list_index].append(mean_density)
-        features_vector = np.array(features) 
-        return features_vector     
+        features_vector = np.array(features)
+        return features_vector
 
     def _get_citizenship(self, features):
         tallest = 0
@@ -201,6 +213,19 @@ class KmeansClustering:
         plt.show()
 
     def fit(self, X):
+        '''
+        Run the K-means clustering algorithm.
+        For the location of the initial centroids, random pick ncentroids from the dataset.
+        Args:
+        -----
+        X: has to be an numpy.ndarray, a matrice of dimension m * n.
+        Return:
+        -------
+        None.
+        Raises:
+        -------
+        This function should not raise any Exception.
+        '''
         clusters = self._Kmeans_algo(X)
         features = self._means_features(X, clusters)
         if (self.ncentroid != 4):
