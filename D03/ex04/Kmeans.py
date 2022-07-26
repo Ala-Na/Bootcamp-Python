@@ -5,6 +5,7 @@ import random
 import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
 import numpy as np
+import os
 
 class KmeansClustering:
 
@@ -38,7 +39,6 @@ class KmeansClustering:
 
     def _Kmeans_algo(self, X):
         self._get_init_centroids(X)
-        ranges = [(min([row[i] for row in X]), max([row[i] for row in X])) for i in range(len(X[0]))]
         final_clusters = None
         for iter in range(self.max_iter):
             clusters = [[] for centr in range(self.ncentroid)]
@@ -87,9 +87,10 @@ class KmeansClustering:
                 mean_height += X[citizen][0]
                 mean_weight += X[citizen][1]
                 mean_density += X[citizen][2]
-            mean_height /= len(clusters[list_index])
-            mean_weight /= len(clusters[list_index])
-            mean_density /= len(clusters[list_index])
+            if (len(clusters[list_index]) != 0):
+                mean_height /= len(clusters[list_index])
+                mean_weight /= len(clusters[list_index])
+                mean_density /= len(clusters[list_index])
             features[list_index].append(mean_height)
             features[list_index].append(mean_weight)
             features[list_index].append(mean_density)
@@ -198,18 +199,21 @@ class KmeansClustering:
             else:
                 color = 'y'
                 label = "Belt centroid"
-            ax.scatter(features[feat][0], features[feat][1], features[feat][2], color=color, label=label)
+            ax.scatter(features[feat][0], features[feat][1], features[feat][2], color=color, label=label, marker='*', s=100)
         custom_legend = [plt.Line2D([0], [0], marker='o', color=earth_color, label=label_earth), \
             plt.Line2D([0], [0], marker='o', color=belt_color, label=label_belt), \
             plt.Line2D([0], [0], marker='o', color=venus_color, label=label_venus), \
             plt.Line2D([0], [0], marker='o', color=mars_color, label=label_mars)]
         legend = ax.legend(handles=custom_legend, loc="upper right", title = "Citizens")
-        centroid_legend = [plt.Line2D([0], [0], marker='o', color='b', label=label_earth), \
-            plt.Line2D([0], [0], marker='o', color='y', label=label_belt), \
-            plt.Line2D([0], [0], marker='o', color='g', label=label_venus), \
-            plt.Line2D([0], [0], marker='o', color='r', label=label_mars)]
+        centroid_legend = [plt.Line2D([0], [0], marker='*', color='b', label=label_earth), \
+            plt.Line2D([0], [0], marker='*', color='y', label=label_belt), \
+            plt.Line2D([0], [0], marker='*', color='g', label=label_venus), \
+            plt.Line2D([0], [0], marker='*', color='r', label=label_mars)]
         ax.add_artist(legend)
         ax.legend(handles=centroid_legend, loc="lower left", title = "Centroid")
+        ax.set_xlabel('Height(m)')
+        ax.set_ylabel('Weight(kg)')
+        ax.set_zlabel('Bone density(kg)')
         plt.show()
 
     def fit(self, X):
@@ -260,24 +264,42 @@ if __name__ == "__main__":
     max_iter = -1
     for arg in sys.argv:
         if arg.startswith("filepath="):
-            if not filepath:
+            if filepath is None:
                 filepath = arg[len("filepath="):]
             else:
                 print("More than 1 filepath given.")
                 exit()
         if arg.startswith("ncentroid="):
             if ncentroid == -1:
-                ncentroid = (int)(arg[len("ncentroid="):])
+                try:
+                    ncentroid = (int)(arg[len("ncentroid="):])
+                except:
+                    print("Incorrect ncentroid argument")
+                    exit()
             else:
                 print("More than 1 ncentroid value given.")
                 exit()
         if arg.startswith("max_iter="):
             if max_iter == -1:
-                max_iter = (int)(arg[len("max_iter="):])
+                try:
+                    max_iter = (int)(arg[len("max_iter="):])
+                except:
+                    print("Incorrect max_iter argument")
+                    exit()
+                if max_iter <= 0:
+                    print("Incorrect max_iter argument")
+                    exit()
             else:
                 print("More than 1 max_iter value given.")
                 exit()
-    datas = np.genfromtxt(filepath, delimiter=',', skip_header=1, usecols=(1,2,3))
+    if not os.path.isfile(filepath):
+        print("Error with filepath")
+        exit()
+    try:
+        datas = np.genfromtxt(filepath, delimiter=',', skip_header=1, usecols=(1,2,3))
+    except:
+        print("File not valid")
+        exit()
     if (max_iter == -1 and ncentroid == -1):
         cluster = KmeansClustering()
     elif max_iter == -1:
