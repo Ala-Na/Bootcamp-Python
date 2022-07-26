@@ -17,7 +17,7 @@ def log(func):
             else:
                 time_unit = "s"
             f = open('machine.log', 'a')
-            action = str(func.__qualname__[len(type(self).__name__) + 1:]).replace("_", " ").title()
+            action = str(func.__name__).replace("_", " ").title()
             f.write("({})Running: {:19}[ exec-time = {:.3f} {} ]".format(id, action, exec_time, time_unit))
             f.write("\n")
             f.close()

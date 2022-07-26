@@ -49,7 +49,7 @@ class ColorFilter():
         if not isinstance(array, np.ndarray):
             return None
         mask = np.linspace(0.0, 1.0, num=4)
-        array[array >= mask[3]] = mask[3]
+        array[array == mask[3]] = mask[3]
         array[(array > mask[2]) & (array < mask[3])] = mask[2]
         array[(array > mask[1]) & (array < mask[2])] = mask[1]
         array[(array > mask[0]) & (array < mask[1])] = mask[0]
@@ -95,6 +95,11 @@ class ColorFilter():
         else:
             for key, value in kwargs.items():
                 rgb_weights = [value[0], value[1], value[2]]
-        scale = np.sum(array[:, :, :3] * rgb_weights, axis=2)
-        array = np.dstack((scale, scale, scale))
+        gray_r = array[:, :, 0] * rgb_weights[0]
+        gray_g = array[:, :, 1] * rgb_weights[1]
+        gray_b = array[:, :, 2] * rgb_weights[2]
+        print(gray_r)
+        array = np.sum(gray_b, gray_g, gray_r)
+        print(array)
+        array = array.astype(np.uint8)
         return(array)

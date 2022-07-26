@@ -44,3 +44,17 @@ if __name__ == "__main__":
         header = file.getheader()
         print(list(data))
         print(list(header))
+
+    print("")
+
+    with CsvReader('csvreader.py', header = True, sep='|', skip_top=1, skip_bottom=1) as file:
+        if file is None :
+            pass
+
+    with CsvReader('dontexist.csv', header = True, sep='|', skip_top=1, skip_bottom=1) as file:
+        if file is None:
+            pass
+
+    with CsvReader(None, header = True, sep='|', skip_top=1, skip_bottom=1) as file:
+        if file is None:
+            pass

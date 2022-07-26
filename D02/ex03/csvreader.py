@@ -4,9 +4,6 @@ import os
 class CsvReader():
 
     def __init__(self, filename=None, sep=',', header=False, skip_top=0, skip_bottom=0):
-        if not os.path.isfile(filename):
-            print("File not found")
-            return
         self.filename = filename
         self.sep = sep
         self.file = None
@@ -15,6 +12,9 @@ class CsvReader():
         self.skip_bottom = skip_bottom
 
     def __enter__(self):
+        if self.filename is None or not os.path.isfile(self.filename):
+            print("File not found")
+            return None
         try:
             ref_size = -1
             self.file = open(self.filename, 'r')
@@ -23,13 +23,15 @@ class CsvReader():
                 if ref_size == -1:
                     ref_size = len(row)
                 if len(row) != ref_size:
+                    print("Error with file")
                     self.file = None
                     return None
                 if any(not elem for elem in row):
+                    print("Error with file")
                     self.file = None
                     return None
-        except:
-            print("Error with file {}".format(self.filename))
+        except Exception:
+            print("Error with file")
             return None
         return self
 
