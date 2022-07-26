@@ -1,9 +1,10 @@
 import time
 from random import randint
 import os
-import inspect
 
-def log(func, * _args):
+def log(func):
+    if not os.path.exists('./machine.log'):
+        os.mknod('./machine.log')
     f = open('machine.log', 'r+')
     f.truncate(0)
     id = os.getlogin()
@@ -18,14 +19,14 @@ def log(func, * _args):
             else:
                 time_unit = "s"
             f = open('machine.log', 'a')
-            action = str(func.__qualname__).removeprefix(type(self).__name__ + ".").replace("_", " ").title()
-            f.write("({})Running: {:20}[ exec-time = {:.3f} {} ]".format(id, action, exec_time, time_unit))
+            action = str(func.__name__).replace("_", " ").title()
+            f.write("({})Running: {:19}[ exec-time = {:.3f} {} ]".format(id, action, exec_time, time_unit))
             f.write("\n")
             f.close()
     return wrapper
 
 class CoffeeMachine():
-    
+
     water_level = 100
 
     @log

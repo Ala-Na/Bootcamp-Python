@@ -30,10 +30,11 @@ class ColorFilter():
     def to_green(self, array):
         if not isinstance(array, np.ndarray):
             return None
+        res = array * 1
         try :
-            return array * [0, 1, 0, 1]
+            return res * [0, 1, 0, 1]
         except:
-            return array * [0, 1, 0]
+            return res * [0, 1, 0]
 
     def to_red(self, array):
         if not isinstance(array, np.ndarray):
@@ -48,13 +49,12 @@ class ColorFilter():
     def to_celluloid(self, array):
         if not isinstance(array, np.ndarray):
             return None
+        res = 1 * array
         mask = np.linspace(0.0, 1.0, num=4)
-        array[array == mask[3]] = mask[3]
-        array[(array > mask[2]) & (array < mask[3])] = mask[2]
-        array[(array > mask[1]) & (array < mask[2])] = mask[1]
-        array[(array > mask[0]) & (array < mask[1])] = mask[0]
-        array[(array <= mask[0])] = mask[0]
-        return array
+        res[res > mask[2]] = mask[3]
+        res[(res > mask[1]) & (res <= mask[2])] = mask[2]
+        res[(res > mask[0]) & (res <= mask[1])] = mask[1]
+        return res
 
     def _check_grayscale_arguments(self, filter, **kwargs):
         if not filter in ['m', 'mean', 'w', 'weight']:
@@ -95,11 +95,8 @@ class ColorFilter():
         else:
             for key, value in kwargs.items():
                 rgb_weights = [value[0], value[1], value[2]]
-        gray_r = array[:, :, 0] * rgb_weights[0]
-        gray_g = array[:, :, 1] * rgb_weights[1]
-        gray_b = array[:, :, 2] * rgb_weights[2]
-        print(gray_r)
-        array = np.sum(gray_b, gray_g, gray_r)
-        print(array)
-        array = array.astype(np.uint8)
-        return(array)
+        res = 1 * array
+        gray = np.sum(array[:, :, :3] * rgb_weights, axis=(2))
+        for third_dim in range(3):
+            res[:, :, third_dim] = gray[:]
+        return res
