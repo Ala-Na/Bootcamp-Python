@@ -7,6 +7,8 @@ import seaborn as sns
 class   MyPlotLib():
 
     def histogram(self, data, features):
+        if not isinstance(data, pd.DataFrame) or not isinstance(features, list):
+            return
         try:
             values = pd.DataFrame(data[features])
             values.hist()
@@ -15,6 +17,8 @@ class   MyPlotLib():
             print("Something went wrong")
 
     def density(self, data, features):
+        if not isinstance(data, pd.DataFrame) or not isinstance(features, list):
+            return
         try:
             values = pd.DataFrame(data[features])
             values.plot.density()
@@ -23,6 +27,8 @@ class   MyPlotLib():
             print("Something went wrong")
 
     def pair_plot(self, data, features):
+        if not isinstance(data, pd.DataFrame) or not isinstance(features, list):
+            return
         try:
             sns.pairplot(data[features])
             plt.show()
@@ -30,6 +36,8 @@ class   MyPlotLib():
             print("Something went wrong")
 
     def box_plot(self, data, features):
+        if not isinstance(data, pd.DataFrame) or not isinstance(features, list):
+            return
         try:
             values = pd.DataFrame(data[features])
             values.boxplot()
