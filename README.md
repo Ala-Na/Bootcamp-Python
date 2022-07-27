@@ -10,9 +10,7 @@ Please, find more informations and credits at [42AI corresponding page](https://
 ## Purpose
 A one week bootcamp to learn python basis, followed by a one week bootcamp on machine learning.
 Vector and matrix concepts are covered.
-
-
-## Interesting learning points
+<b>Interesting learning points:</b>
 - Implementing a Kmeans algorithm (D03/ex04)
 
 
