@@ -269,6 +269,9 @@ if __name__ == "__main__":
                 except:
                     print("Incorrect ncentroid argument")
                     exit()
+                if (ncentroid <= 0):
+                    print("Incorrect ncentroid argument")
+                    exit()
             else:
                 print("More than 1 ncentroid value given.")
                 exit()

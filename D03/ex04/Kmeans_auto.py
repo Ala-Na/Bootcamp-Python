@@ -80,7 +80,7 @@ class KmeansClustering:
         features = kmean.cluster_centers_
         nb = [0] * self.ncentroid
         for i in range(len(kmean.labels_)):
-            nb[kmean.labels_[i]] += 1 
+            nb[kmean.labels_[i]] += 1
         if (self.ncentroid != 4):
             for area in range(self.ncentroid):
                 print("Area {:3} : Total of {:3} citizens, with mean heigh of {:6.2f}, mean weight of {:6.2f} and mean bone density of {:4.2f}."\
@@ -124,6 +124,9 @@ if __name__ == "__main__":
                 except:
                     print("Incorrect ncentroid argument")
                     exit()
+                if (ncentroid <= 0):
+                    print("Incorrect ncentroid argument")
+                    exit()
             else:
                 print("More than 1 ncentroid value given.")
                 exit()
@@ -156,5 +159,3 @@ if __name__ == "__main__":
         cluster = KmeansClustering(max_iter=max_iter)
     else:
         cluster = KmeansClustering(ncentroid=ncentroid, max_iter=max_iter)
-    cluster.fit(datas)
-    print(cluster.predict(datas))

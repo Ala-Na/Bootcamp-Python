@@ -1,4 +1,6 @@
 import numpy as np
+import matplotlib
+from matplotlib import pyplot as plt
 
 from ImageProcessor import ImageProcessor
 imp = ImageProcessor()
@@ -94,3 +96,18 @@ if grey is not None:
     imp.display(grey)
 else:
     print("arr was not a numpy array")
+
+# Github tests
+
+for f in [cf.to_red, cf.to_green, cf.to_blue, cf.invert]:
+	array = plt.imread("../resources/elon_canaGAN.png")
+	plt.imshow(f(array))
+	plt.show()
+
+im = cf.to_grayscale(array, "m")
+plt.imshow(im, cmap="gray")
+plt.show()
+
+im = cf.to_grayscale(array, "w", weights = [0.2126, 0.7152, 0.0722])
+plt.imshow(im, cmap="gray")
+plt.show()
