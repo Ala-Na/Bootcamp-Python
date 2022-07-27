@@ -207,7 +207,7 @@ class KmeansClustering:
         ax.set_xlabel('Height(m)')
         ax.set_ylabel('Weight(kg)')
         ax.set_zlabel('Bone density(kg)')
-        # plt.show()
+        plt.show()
 
     def fit(self, X):
         '''

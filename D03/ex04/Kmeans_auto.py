@@ -159,3 +159,5 @@ if __name__ == "__main__":
         cluster = KmeansClustering(max_iter=max_iter)
     else:
         cluster = KmeansClustering(ncentroid=ncentroid, max_iter=max_iter)
+    cluster.fit(datas)
+    print(cluster.predict(datas))
