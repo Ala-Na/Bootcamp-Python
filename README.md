@@ -1,4 +1,4 @@
-# Bootcamp-Python
+# Bootcamp Python
 <p align="center">
 <img width="160" height="160" src="https://user-images.githubusercontent.com/67599180/180652205-5f2c60d7-3d4e-4aa0-ab4a-01a28892b8e3.png">
  </p>
