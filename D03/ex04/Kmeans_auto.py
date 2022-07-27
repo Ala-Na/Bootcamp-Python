@@ -3,6 +3,7 @@ import sys
 from csvreader import CsvReader
 import random
 from sklearn.cluster import KMeans
+import os
 
 class KmeansClustering:
 
@@ -11,27 +12,85 @@ class KmeansClustering:
         self.max_iter = max_iter # number of max iterations to update the centroids
         self.centroids = [] # values of the centroids
 
+    def _get_citizenship(self, features):
+        tallest = 0
+        less_density = 0
+        thinest = 0
+        for area in range(len(features)):
+            if features[area][0] > features[tallest][0]:
+                tallest = area
+            if features[area][2] < features[less_density][2]:
+               less_density = area
+        if tallest != less_density:
+            diff_tall = features[tallest][0] - features[less_density][0]
+            diff_dens = features[tallest][2] - features[less_density][2]
+            if diff_tall > diff_dens*100:
+                belt = tallest
+            else:
+                belt = less_density
+        else:
+            belt = tallest
+        if belt != 0:
+            tallest = 0
+        else:
+            tallest = 1
+            thinest = 1
+        for area in range(len(features)):
+            if features[area][0] > features[tallest][0] and area != belt:
+                tallest = area
+            if features[area][1] < features[thinest][1] and area != belt:
+                thinest = area
+        if tallest != thinest:
+            venus = thinest
+            mars = tallest
+        else:
+            venus = thinest
+            mars = -1
+        if (belt == 0 and venus == 1) or (belt == 1 or venus == 0):
+            tallest = 2
+        elif belt == 0 or venus == 0:
+            tallest = 1
+        else:
+            tallest = 0
+        for area in range(len(features)):
+            if features[area][0] > features[tallest][0] and area != belt and area != venus:
+                tallest = area
+        mars = tallest
+        for area in range(len(features)):
+            if area != belt and area != venus and area != mars:
+                earth = area
+        citizenship_index = ["" for x in range(len(features))]
+        for area in range(len(features)):
+            if area == earth:
+                citizenship_index[area] = 'United Nations of Earth'
+            elif area == mars:
+                citizenship_index[area] = 'Mars Republic'
+            elif area == venus:
+                citizenship_index[area] = 'The flying cities of Venus'
+            else:
+                citizenship_index[area] = 'Ateroids\' Belt colonies'
+        return citizenship_index
+
     def predict(self, X):
-        kmean = KMeans(n_clusters=self.ncentroid).predict(X)
-        print(kmean.labels_)
+        kmean = KMeans(n_clusters=self.ncentroid, max_iter=self.max_iter).fit_predict(X)
         return kmean
 
     def fit(self, X):
-        kmean = KMeans(n_clusters=self.ncentroid).fit(X)
-        print(kmean.labels_)
-        # features = self._means_features(X, clusters)
-        # if (self.ncentroid != 4):
-        #     for area in range(self.ncentroid):
-        #         print("Area {:3} : Total of {:3} citizens, with mean heigh of {:6.2f}, mean weight of {:6.2f} and mean bone density of {:4.2f}."\
-        #             .format(area + 1, len(clusters[area]), features[area][0], features[area][1], features[area][2]))
-        # else:
-        #     citizenship_index = self._get_citizenship(features)
-        #     for area in range(self.ncentroid):
-        #         print("{:27} : Total of {:3} citizens, with mean heigh of {:6.2f}, mean weight of {:6.2f} and mean bone density of {:4.2f}."\
-        #             .format(citizenship_index[area], len(clusters[area]), features[area][0], features[area][1], features[area][2]))
-        #     self._rep_citizens(X, clusters, features, citizenship_index)
-        # return None
-        return kmean
+        kmean = KMeans(n_clusters=self.ncentroid, max_iter=self.max_iter).fit(X)
+        features = kmean.cluster_centers_
+        nb = [0] * self.ncentroid
+        for i in range(len(kmean.labels_)):
+            nb[kmean.labels_[i]] += 1 
+        if (self.ncentroid != 4):
+            for area in range(self.ncentroid):
+                print("Area {:3} : Total of {:3} citizens, with mean heigh of {:6.2f}, mean weight of {:6.2f} and mean bone density of {:4.2f}."\
+                    .format(area + 1, nb[area], features[area][0], features[area][1], features[area][2]))
+        else:
+            citizenship_index = self._get_citizenship(features)
+            for area in range(self.ncentroid):
+                print("{:27} : Total of {:3} citizens, with mean heigh of {:6.2f}, mean weight of {:6.2f} and mean bone density of {:4.2f}."\
+                    .format(citizenship_index[area], nb[area], features[area][0], features[area][1], features[area][2]))
+        return None
 
 def check_argument(*args):
     if (len(args) <= 1 or len(args) > 4):
@@ -98,3 +157,4 @@ if __name__ == "__main__":
     else:
         cluster = KmeansClustering(ncentroid=ncentroid, max_iter=max_iter)
     cluster.fit(datas)
+    print(cluster.predict(datas))
