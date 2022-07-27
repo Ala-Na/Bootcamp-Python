@@ -15,9 +15,6 @@ class Komparator():
             return None
         if categorical_var not in self.df.columns or numerical_var not in self.df.columns:
             return None
-        # # One boxplot will be made per categorical_var because of 'by'
-        # self.df.boxplot(column=[numerical_var], by=categorical_var)
-        # plt.show()
         try:
             comp_cat = self.df[categorical_var].unique()
             to_replace = {}
