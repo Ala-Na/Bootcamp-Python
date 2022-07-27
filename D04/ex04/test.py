@@ -13,3 +13,8 @@ print(sp.when('Athina'))
 
 print(sp.when('Paris'))
 
+print(sp.where(2000))
+
+print(sp.where(1980))
+
+print(sp.when('London'))

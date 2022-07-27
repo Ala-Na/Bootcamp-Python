@@ -6,9 +6,12 @@ class FileLoader:
     def load(self, path):
         if not os.path.isfile(path):
             return None
-        datas = pd.read_csv(path)
-        print("Loading dataset of dimensions {} x {}".format(datas.shape[0], datas.shape[1]))
-        return datas
+        try:
+            datas = pd.read_csv(path)
+            print("Loading dataset of dimensions {} x {}".format(datas.shape[0], datas.shape[1]))
+            return datas
+        except:
+            return None
 
     def display(self, df, n):
         if not isinstance(df, pd.DataFrame):
