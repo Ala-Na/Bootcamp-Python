@@ -1,3 +1,4 @@
+from cmath import isnan
 from re import A
 import sys
 from csvreader import CsvReader
@@ -15,6 +16,7 @@ class KmeansClustering:
         self.centroids = [] # values of the centroids
 
     def _get_init_centroids(self, X):
+        self.centroids = []
         if (len(X) < self.ncentroid):
             print("Data input too small for ncentroid number.")
             exit()
@@ -54,21 +56,26 @@ class KmeansClustering:
         for i in range(len(assignation)):
             datas_per_centr[assignation[i]].append(X[i])
         for centr in enumerate(datas_per_centr):
-            new_centr.append(np.mean(centr[1], axis=0))
+            if not centr[1]:
+                mean = X[random.randint(0, len(X) - 1)]
+            else:
+                mean = np.mean(centr[1], axis=0)
+            new_centr.append(mean)
         self.centroids = new_centr
 
 
-    def _recalculate_centroids(self, old_centr, clusters, X):
-        for centr_index in range(self.ncentroid):
-            new_centr = [0.0] * len(X[0])
-            if len(clusters[centr_index]) > 0:
-                for point_index in clusters[centr_index]:
-                    for elem in range(len(X[point_index])):
-                        new_centr[elem] += X[point_index][elem]
-                for divid in range(len(new_centr)):
-                    new_centr[divid] /= len(clusters[centr_index])
-                old_centr[centr_index] = new_centr
-        return old_centr
+
+    # def _recalculate_centroids(self, old_centr, clusters, X):
+    #     for centr_index in range(self.ncentroid):
+    #         new_centr = [0.0] * len(X[0])
+    #         if len(clusters[centr_index]) > 0:
+    #             for point_index in clusters[centr_index]:
+    #                 for elem in range(len(X[point_index])):
+    #                     new_centr[elem] += X[point_index][elem]
+    #             for divid in range(len(new_centr)):
+    #                 new_centr[divid] /= len(clusters[centr_index])
+    #             old_centr[centr_index] = new_centr
+    #     return old_centr
 
     def _Kmeans_algo(self, X):
         self._get_init_centroids(X)
@@ -77,10 +84,13 @@ class KmeansClustering:
         for iter in range(self.max_iter):
             assignation = self._assignate_to_cluster(X)
             self._update_centroids(X, assignation)
-            if (assignation == prev_assignation):
-                break
+            # if (assignation == prev_assignation):
+            #     break
             prev_assignation = assignation
-        print(self.centroids)
+        datas_per_centr = [[] for i in range(len(self.centroids))]
+        for i in range(len(assignation)):
+            datas_per_centr[assignation[i]].append(X[i])
+        return (assignation, datas_per_centr)
 
         # Must return clusters = list[list[elem of 1st centroid], list[elem of 2nd centroid]...]
 
@@ -114,32 +124,28 @@ class KmeansClustering:
         -------
         This function should not raise any Exception.
         '''
-        clusters = self._Kmeans_algo(X)
-        vector_res = np.empty(X.shape[0])
-        for index in range(len(clusters)):
-            for citizen in clusters[index]:
-                vector_res[citizen] = index
-        return vector_res
+        assignations, clusters = self._Kmeans_algo(X)
+        return assignations
 
-    def _means_features(self, X, clusters):
-        features =  [[] for area in range(self.ncentroid)]
-        for list_index in range(self.ncentroid):
-            mean_height = 0.0
-            mean_weight = 0.0
-            mean_density = 0.0
-            for citizen in clusters[list_index]:
-                mean_height += X[citizen][0]
-                mean_weight += X[citizen][1]
-                mean_density += X[citizen][2]
-            if (len(clusters[list_index]) != 0):
-                mean_height /= len(clusters[list_index])
-                mean_weight /= len(clusters[list_index])
-                mean_density /= len(clusters[list_index])
-            features[list_index].append(mean_height)
-            features[list_index].append(mean_weight)
-            features[list_index].append(mean_density)
-        features_vector = np.array(features)
-        return features_vector
+    # def _means_features(self, X, clusters):
+    #     features =  [[] for area in range(self.ncentroid)]
+    #     for list_index in range(self.ncentroid):
+    #         mean_height = 0.0
+    #         mean_weight = 0.0
+    #         mean_density = 0.0
+    #         for citizen in clusters[list_index]:
+    #             mean_height += citizen[0]
+    #             mean_weight += citizen[1]
+    #             mean_density += citizen[2]
+    #         if (len(clusters[list_index]) != 0):
+    #             mean_height /= len(clusters[list_index])
+    #             mean_weight /= len(clusters[list_index])
+    #             mean_density /= len(clusters[list_index])
+    #         features[list_index].append(mean_height)
+    #         features[list_index].append(mean_weight)
+    #         features[list_index].append(mean_density)
+    #     features_vector = np.array(features)
+    #     return features_vector
 
     def _get_citizenship(self, features):
         tallest = 0
@@ -200,11 +206,7 @@ class KmeansClustering:
                 citizenship_index[area] = 'Ateroids\' Belt colonies'
         return citizenship_index
 
-    def _rep_citizens(self, X, clusters, features, citizenship_index):
-        vector_res = [-1] * len(X)
-        for index in range(len(clusters)):
-            for citizen in clusters[index]:
-                vector_res[citizen] = index
+    def _rep_citizens(self, X, clusters, citizenship_index):
         fig = plt.figure(figsize=(100,100))
         ax = plt.axes(projection='3d')
         mars_color = 'xkcd:crimson'
@@ -216,21 +218,22 @@ class KmeansClustering:
         belt_color = 'xkcd:golden yellow'
         label_belt = "Belt"
         ax.set_title('Citizens of Solar System',color='0.1')
-        for point in range(len(X)):
-            if label_earth in citizenship_index[vector_res[point]]:
-                color = earth_color
-                label = label_earth
-            elif label_mars in citizenship_index[vector_res[point]]:
-                color = mars_color
-                label = label_mars
-            elif label_venus in citizenship_index[vector_res[point]]:
-                color = venus_color
-                label = label_venus
-            else:
-                color = belt_color
-                label = label_belt
-            ax.scatter(X[point][0], X[point][1], X[point][2], color=color)
-        for feat in range(len(features)):
+        for i in range(len(citizenship_index)):
+            for point in clusters[i]:
+                if label_earth in citizenship_index[i]:
+                    color = earth_color
+                    label = label_earth
+                elif label_mars in citizenship_index[i]:
+                    color = mars_color
+                    label = label_mars
+                elif label_venus in citizenship_index[i]:
+                    color = venus_color
+                    label = label_venus
+                else:
+                    color = belt_color
+                    label = label_belt
+                ax.scatter(point[0], point[1], point[2], color=color)
+        for feat in range(len(citizenship_index)):
             if "Earth" in citizenship_index[feat]:
                 color = 'b'
                 label = "Earth centroid"
@@ -243,7 +246,7 @@ class KmeansClustering:
             else:
                 color = 'y'
                 label = "Belt centroid"
-            ax.scatter(features[feat][0], features[feat][1], features[feat][2], color=color, label=label, marker='*', s=100)
+            ax.scatter(self.centroids[feat][0], self.centroids[feat][1], self.centroids[feat][2], color=color, label=label, marker='*', s=100)
         custom_legend = [plt.Line2D([0], [0], marker='o', color=earth_color, label=label_earth), \
             plt.Line2D([0], [0], marker='o', color=belt_color, label=label_belt), \
             plt.Line2D([0], [0], marker='o', color=venus_color, label=label_venus), \
@@ -258,7 +261,7 @@ class KmeansClustering:
         ax.set_xlabel('Height(m)')
         ax.set_ylabel('Weight(kg)')
         ax.set_zlabel('Bone density(kg)')
-        plt.show()
+        # plt.show()
 
     def fit(self, X):
         '''
@@ -274,8 +277,8 @@ class KmeansClustering:
         -------
         This function should not raise any Exception.
         '''
-        clusters = self._Kmeans_algo(X)
-        features = self._means_features(X, clusters)
+        assignations, clusters = self._Kmeans_algo(X)
+        features = self.centroids
         if (self.ncentroid != 4):
             for area in range(self.ncentroid):
                 print("Area {:3} : Total of {:3} citizens, with mean heigh of {:6.2f}, mean weight of {:6.2f} and mean bone density of {:4.2f}."\
@@ -285,7 +288,7 @@ class KmeansClustering:
             for area in range(self.ncentroid):
                 print("{:27} : Total of {:3} citizens, with mean heigh of {:6.2f}, mean weight of {:6.2f} and mean bone density of {:4.2f}."\
                     .format(citizenship_index[area], len(clusters[area]), features[area][0], features[area][1], features[area][2]))
-            self._rep_citizens(X, clusters, features, citizenship_index)
+            self._rep_citizens(X, clusters, citizenship_index)
         return None
 
 def check_argument(*args):
@@ -353,4 +356,4 @@ if __name__ == "__main__":
     else:
         cluster = KmeansClustering(ncentroid=ncentroid, max_iter=max_iter)
     cluster.fit(datas)
-    cluster.predict(datas)
+    print(cluster.predict(datas))
