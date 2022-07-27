@@ -63,53 +63,19 @@ class KmeansClustering:
             new_centr.append(mean)
         self.centroids = new_centr
 
-
-
-    # def _recalculate_centroids(self, old_centr, clusters, X):
-    #     for centr_index in range(self.ncentroid):
-    #         new_centr = [0.0] * len(X[0])
-    #         if len(clusters[centr_index]) > 0:
-    #             for point_index in clusters[centr_index]:
-    #                 for elem in range(len(X[point_index])):
-    #                     new_centr[elem] += X[point_index][elem]
-    #             for divid in range(len(new_centr)):
-    #                 new_centr[divid] /= len(clusters[centr_index])
-    #             old_centr[centr_index] = new_centr
-    #     return old_centr
-
     def _Kmeans_algo(self, X):
         self._get_init_centroids(X)
-        # final_clusters = None
         prev_assignation = []
         for iter in range(self.max_iter):
             assignation = self._assignate_to_cluster(X)
             self._update_centroids(X, assignation)
-            # if (assignation == prev_assignation):
-            #     break
+            if (assignation == prev_assignation):
+                break
             prev_assignation = assignation
         datas_per_centr = [[] for i in range(len(self.centroids))]
         for i in range(len(assignation)):
             datas_per_centr[assignation[i]].append(X[i])
         return (assignation, datas_per_centr)
-
-        # Must return clusters = list[list[elem of 1st centroid], list[elem of 2nd centroid]...]
-
-        # for iter in range(self.max_iter):
-        #     clusters = [[] for centr in range(self.ncentroid)]
-        #     for elem in range(len(X)):
-        #         point = X[elem]
-        #         bestmatch = 0
-        #         for centr_index in range(self.ncentroid):
-
-        #             distance = self._L1(self.centroids[centr_index], point)
-        #             if distance < self._L1(self.centroids[bestmatch], point):
-        #                 bestmatch = centr_index
-        #         clusters[bestmatch].append(elem)
-        #     if clusters == final_clusters:
-        #         break
-        #     final_clusters = clusters
-        #     self.centroids = self._recalculate_centroids(self.centroids, clusters, X)
-        # return clusters
 
     def predict(self, X):
         '''
@@ -126,26 +92,6 @@ class KmeansClustering:
         '''
         assignations, clusters = self._Kmeans_algo(X)
         return assignations
-
-    # def _means_features(self, X, clusters):
-    #     features =  [[] for area in range(self.ncentroid)]
-    #     for list_index in range(self.ncentroid):
-    #         mean_height = 0.0
-    #         mean_weight = 0.0
-    #         mean_density = 0.0
-    #         for citizen in clusters[list_index]:
-    #             mean_height += citizen[0]
-    #             mean_weight += citizen[1]
-    #             mean_density += citizen[2]
-    #         if (len(clusters[list_index]) != 0):
-    #             mean_height /= len(clusters[list_index])
-    #             mean_weight /= len(clusters[list_index])
-    #             mean_density /= len(clusters[list_index])
-    #         features[list_index].append(mean_height)
-    #         features[list_index].append(mean_weight)
-    #         features[list_index].append(mean_density)
-    #     features_vector = np.array(features)
-    #     return features_vector
 
     def _get_citizenship(self, features):
         tallest = 0
