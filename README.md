@@ -11,7 +11,7 @@ Please, find more informations and credits at [42AI corresponding page](https://
 A one week bootcamp to learn python basis, followed by a one week bootcamp on machine learning.
 Vector and matrix concepts are covered.
 
-<s>Interesting learning points:</s>
+**Interesting learning points:**
 - Implementing a Kmeans algorithm (D03/ex04)
 
 
