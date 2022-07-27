@@ -2,6 +2,8 @@ import pandas as pd
 from collections import OrderedDict
 
 def howManyMedals(df, participant):
+    if not isinstance(df, pd.DataFrame) or not isinstance(participant, str):
+        return None
     for_paticipant = df.loc[df['Name'] == participant]
     group_by_year = for_paticipant[['Year', 'Medal']].value_counts(dropna=False)
     years_key = []

@@ -1,6 +1,9 @@
 import pandas as pd
 
 def howManyMedalsByCountry(df, country):
+    if not isinstance(df, pd.DataFrame) or not isinstance(country, str):
+        return None
+    
     team_sports = ['Basketball', 'Football',  'Tug-Of-War', 'Badminton', 'Sailing',
                 'Handball', 'Water Polo', 'Hockey', 'Rowing', 'Bobsleigh',
                 'Softball', 'Volleyball', 'Synchronized Swimming', 'Baseball',

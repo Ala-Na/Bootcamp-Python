@@ -1,7 +1,7 @@
 import pandas as pd
 
 def youngestfellah(df, year):
-    if not isinstance(df, pd.DataFrame):
+    if not isinstance(df, pd.DataFrame) or not (isinstance(year, str) or isinstance(year, int)):
         return None
     year_selection = df.loc[df['Year'] == year]
     men = year_selection.loc[year_selection['Sex'] == 'M']
